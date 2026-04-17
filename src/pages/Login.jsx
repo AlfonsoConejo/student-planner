@@ -1,4 +1,8 @@
-export default function RegisterForm() {
+import { useState } from "react";
+
+export default function LoginForm() {
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4">
       
@@ -6,7 +10,7 @@ export default function RegisterForm() {
         
         {/* HEADER */}
         <h1 className="text-white text-2xl font-semibold text-center mb-6">
-          Crear cuenta
+          Iniciar sesión
         </h1>
 
         {/* SOCIAL */}
@@ -24,33 +28,7 @@ export default function RegisterForm() {
         {/* FORM */}
         <form className="space-y-4">
           
-          {/* First Name */}
-          <div>
-            <label className="block text-sm text-gray-400 mb-1">
-              Nombre
-            </label>
-            <input
-              type="text"
-              name="first_name"
-              placeholder="Juan"
-              className="w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            />
-          </div>
-
-          {/* Last Name */}
-          <div>
-            <label className="block text-sm text-gray-400 mb-1">
-              Apellido
-            </label>
-            <input
-              type="text"
-              name="last_name"
-              placeholder="Pérez"
-              className="w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            />
-          </div>
-
-          {/* Email */}
+          {/* EMAIL */}
           <div>
             <label className="block text-sm text-gray-400 mb-1">
               Correo
@@ -63,33 +41,57 @@ export default function RegisterForm() {
             />
           </div>
 
-          {/* Password */}
+          {/* PASSWORD */}
           <div>
             <label className="block text-sm text-gray-400 mb-1">
               Contraseña
             </label>
-            <input
-              type="password"
-              name="password_hash"
-              placeholder="••••••••"
-              className="w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            />
+
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="••••••••"
+                className="w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 pr-10 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              />
+
+              {/* TOGGLE */}
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-2.5 text-gray-400 hover:text-white text-sm"
+              >
+                {showPassword ? "Ocultar" : "Ver"}
+              </button>
+            </div>
           </div>
 
-          {/* Submit */}
+          {/* OPTIONS */}
+          <div className="flex items-center justify-between text-sm">
+            <label className="flex items-center gap-2 text-gray-400">
+              <input type="checkbox" className="accent-blue-500" />
+              Recordarme
+            </label>
+
+            <a href="#" className="text-blue-400 hover:underline">
+              ¿Olvidaste tu contraseña?
+            </a>
+          </div>
+
+          {/* SUBMIT */}
           <button
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-md font-semibold transition"
           >
-            Crear cuenta
+            Iniciar sesión
           </button>
         </form>
 
         {/* FOOTER */}
         <p className="text-gray-400 text-sm text-center mt-6">
-          ¿Ya tienes cuenta?{' '}
-          <a href="/login" className="text-blue-400 hover:underline">
-            Inicia sesión
+          ¿No tienes cuenta?{" "}
+          <a href="/register" className="text-blue-400 hover:underline">
+            Regístrate
           </a>
         </p>
       </div>
