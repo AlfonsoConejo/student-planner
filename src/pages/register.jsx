@@ -1,6 +1,40 @@
 import { Link } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
 
 export default function RegisterForm() {
+
+  const API_URL = import.meta.env.VITE_API_URL;
+  const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', password: ''});
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch(`${API_URL}/api/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+      console.log(data);
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    document.title = "Registro";
+  }, []);
+  
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4">
       
@@ -24,16 +58,16 @@ export default function RegisterForm() {
         <div className="text-center text-gray-400 text-sm mb-6">o</div>
 
         {/* FORM */}
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4" >
           
           {/* First Name */}
           <div>
             <label className="block text-sm text-gray-400 mb-1">
               Nombre
             </label>
-            <input
+            <input onChange={handleChange}
               type="text"
-              name="first_name"
+              name="firstName"
               placeholder="Juan"
               className="w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
@@ -44,9 +78,9 @@ export default function RegisterForm() {
             <label className="block text-sm text-gray-400 mb-1">
               Apellido
             </label>
-            <input
+            <input onChange={handleChange}
               type="text"
-              name="last_name"
+              name="lastName"
               placeholder="Pérez"
               className="w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
@@ -57,7 +91,7 @@ export default function RegisterForm() {
             <label className="block text-sm text-gray-400 mb-1">
               Correo
             </label>
-            <input
+            <input onChange={handleChange}
               type="email"
               name="email"
               placeholder="correo@email.com"
@@ -70,9 +104,9 @@ export default function RegisterForm() {
             <label className="block text-sm text-gray-400 mb-1">
               Contraseña
             </label>
-            <input
+            <input onChange={handleChange}
               type="password"
-              name="password_hash"
+              name="password"
               placeholder="••••••••"
               className="w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
