@@ -1,14 +1,72 @@
 import { Link } from "react-router-dom";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 import React, { useState, useEffect } from 'react';
 
 export default function RegisterForm() {
 
   const API_URL = import.meta.env.VITE_API_URL;
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', password: ''});
+  const [errors, setErrors] = useState({ firstName: '', lastName: '', email: '', password: ''});
+  const [touched, setTouched] = useState({ firstName: false, lastName: false, email: false, password: false});
+
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    let { name, value } = e.target;
+
+    if (name === "firstName" || name === "lastName") {
+      value = value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, "");
+    }
+
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleBlur = (e) => {
+    let { name, value } = e.target;
+
+    setTouched(prev => ({
+      ...prev,
+      [name]: true
+    }));
+
+    const error = validateField(name, value);
+
+    setErrors(prev => ({
+      ...prev,
+      [name]: error
+    }));
+  };
+
+  console.log(touched);
+  console.log(errors);
+
+
+  const validateField = (name, value) => {
+
+    const trimmed = name === "password" ? value : value.trim();
+
+    switch (name) {
+      case "firstName":
+        if (!trimmed) return "El nombre es obligatorio";
+        return "";
+
+      case "lastName":
+        if (!trimmed) return "El apellido es obligatorio";
+        if (trimmed.length < 2) return "Debe tener al menos 2 caracteres";
+        return "";
+
+      case "email":
+        if (!trimmed) return "El correo es obligatorio";
+        if (!/\S+@\S+\.\S+/.test(trimmed)) return "Correo inválido";
+        return "";
+
+      case "password":
+        if (!trimmed) return "La contraseña es obligatoria";
+        if (trimmed.length < 6) return "Debe tener al menos 6 caracteres";
+        return "";
+
+      default:
+        return "";
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -30,6 +88,7 @@ export default function RegisterForm() {
       console.error(error);
     }
   };
+
 
   useEffect(() => {
     document.title = "Registro";
@@ -62,61 +121,133 @@ export default function RegisterForm() {
           
           {/* First Name */}
           <div>
-            <label className="block text-sm text-gray-400 mb-1">
+            <label htmlFor="firstName" className="block text-sm text-gray-400 mb-1">
               Nombre
             </label>
             <input onChange={handleChange}
+              onBlur={handleBlur}
+              id="firstName"
               type="text"
               name="firstName"
+              value={formData.firstName}
               placeholder="Juan"
-              className="w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              maxLength={50}
+              className={`w-full bg-gray-700 border rounded-md px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-1
+              ${
+                touched.firstName && errors.firstName
+                  ? "border-red-400 focus:border-blue-500 focus:ring-blue-500"
+                  : "border-gray-600 focus:border-blue-500 focus:ring-blue-500"
+              }`
+            }
             />
+
+            {touched.firstName && errors.firstName && (
+              <p className="text-gray-400 text-sm flex items-center gap-1 mt-1">
+                <IoIosCloseCircleOutline className="text-base"/>
+                {errors.firstName}
+              </p>
+            )}
           </div>
 
           {/* Last Name */}
           <div>
-            <label className="block text-sm text-gray-400 mb-1">
+            <label htmlFor="lastName" className="block text-sm text-gray-400 mb-1">
               Apellido
             </label>
             <input onChange={handleChange}
+              onBlur={handleBlur}
+              id="lastName"
               type="text"
               name="lastName"
+              value={formData.lastName}
               placeholder="Pérez"
-              className="w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              maxLength={50}
+              className={`w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-1
+                ${
+                  touched.lastName && errors.lastName
+                    ? "border-red-400 focus:border-blue-500 focus:ring-blue-500"
+                    : "border-gray-600 focus:border-blue-500 focus:ring-blue-500"
+                }`
+              }
             />
+
+            {touched.lastName && errors.lastName && (
+              <p className="text-gray-400 text-sm flex items-center gap-1 mt-1">
+                <IoIosCloseCircleOutline className="text-base"/>
+                {errors.lastName}
+              </p>
+            )}
           </div>
 
           {/* Email */}
           <div>
-            <label className="block text-sm text-gray-400 mb-1">
+            <label htmlFor="email"  className="block text-sm text-gray-400 mb-1">
               Correo
             </label>
             <input onChange={handleChange}
+              onBlur={handleBlur}
+              id="email"
               type="email"
               name="email"
+              value={formData.email}
               placeholder="correo@email.com"
-              className="w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              maxLength={254}
+              autoComplete="email"
+              className={`w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-1
+                ${
+                  touched.email && errors.email
+                    ? "border-red-400 focus:border-blue-500 focus:ring-blue-500"
+                    : "border-gray-600 focus:border-blue-500 focus:ring-blue-500"
+                }`
+              }
             />
+            {touched.email && errors.email && (
+              <p className="text-gray-400 text-sm flex items-center gap-1 mt-1">
+                <IoIosCloseCircleOutline className="text-base"/>
+                {errors.email}
+              </p>
+            )}
           </div>
 
           {/* Password */}
           <div>
-            <label className="block text-sm text-gray-400 mb-1">
+            <label htmlFor="password" className="block text-sm text-gray-400 mb-1">
               Contraseña
             </label>
             <input onChange={handleChange}
+              onBlur={handleBlur}
+              id="password"
               type="password"
               name="password"
+              value={formData.password}
               placeholder="••••••••"
-              className="w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              maxLength={72}
+              autoComplete="new-password"
+              className={`w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-1
+                ${
+                  touched.password && errors.password
+                    ? "border-red-400 focus:border-blue-500 focus:ring-blue-500"
+                    : "border-gray-600 focus:border-blue-500 focus:ring-blue-500"
+                }`
+              }
             />
+
+            {touched.password && errors.password && (
+              <p className="text-gray-400 text-sm flex items-center gap-1 mt-1">
+                <IoIosCloseCircleOutline className="text-base"/>
+                {errors.password}
+              </p>
+            )}
           </div>
 
           {/* Submit */}
           <button
+            disabled= {!!errors.firstName || !!errors.lastName || !!errors.email || errors.password}
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-md font-semibold transition"
-          >
+            className="w-full bg-blue-600 text-white py-2 rounded-md font-semibold transition
+              hover:bg-blue-500 cursor-pointer
+              disabled:bg-blue-300 disabled:cursor-not-allowed disabled:opacity-50"
+            >
             Crear cuenta
           </button>
         </form>
