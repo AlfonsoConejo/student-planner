@@ -8,11 +8,14 @@ export default function RegisterForm() {
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', password: ''});
   const [errors, setErrors] = useState({ firstName: '', lastName: '', email: '', password: ''});
   const [touched, setTouched] = useState({ firstName: false, lastName: false, email: false, password: false});
+  const [isSending, setIsSending] = useState(false);
+  const [serverError, setServerError] = useState("");
 
 
   const handleChange = (e) => {
     let { name, value } = e.target;
 
+    //Only letters allowed in name fields
     if (name === "firstName" || name === "lastName") {
       value = value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, "");
     }
@@ -36,13 +39,9 @@ export default function RegisterForm() {
     }));
   };
 
-  console.log(touched);
-  console.log(errors);
-
 
   const validateField = (name, value) => {
-
-    const trimmed = name === "password" ? value : value.trim();
+    const trimmed = value.trim();
 
     switch (name) {
       case "firstName":
@@ -55,13 +54,14 @@ export default function RegisterForm() {
         return "";
 
       case "email":
-        if (!trimmed) return "El correo es obligatorio";
-        if (!/\S+@\S+\.\S+/.test(trimmed)) return "Correo inválido";
+        const normalized = trimmed.toLowerCase();
+        if (!normalized) return "El correo es obligatorio";
+        if (!/\S+@\S+\.\S+/.test(normalized)) return "Correo inválido";
         return "";
 
       case "password":
-        if (!trimmed) return "La contraseña es obligatoria";
-        if (trimmed.length < 6) return "Debe tener al menos 6 caracteres";
+        if (!value) return "La contraseña es obligatoria";
+        if (value.length < 6) return "Debe tener al menos 6 caracteres";
         return "";
 
       default:
@@ -72,20 +72,53 @@ export default function RegisterForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Revalidate fields one last time before sending
+    const newErrors = {
+      firstName: validateField("firstName", formData.firstName),
+      lastName: validateField("lastName", formData.lastName),
+      email: validateField("email", formData.email),
+      password: validateField("password", formData.password),
+    };
+
+    setErrors(newErrors);
+
+    // Prevent data from being sent if there are errors
+    const hasErrors = Object.values(errors).some(error => error);
+    if (hasErrors) return;
+
+    //Set the form as sending
+    setIsSending(true);
+
+    // Clean data for sending
+    const cleanedData = {
+      firstName: formData.firstName.trim(),
+      lastName: formData.lastName.trim(),
+      email: formData.email.trim().toLowerCase(),
+      password: formData.password,
+    };
+
     try {
       const res = await fetch(`${API_URL}/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(cleanedData),
       });
 
       const data = await res.json();
-      console.log(data);
+
+      if (!res.ok) {
+        setServerError(data.message || "Error en el registro");
+        return;
+      }
+
+      setServerError(""); 
 
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -118,6 +151,12 @@ export default function RegisterForm() {
 
         {/* FORM */}
         <form onSubmit={handleSubmit} className="space-y-4" >
+
+          {serverError && (
+            <div className="bg-red-500/10 border border-red-500 text-red-400 p-2 rounded mb-4 text-sm">
+              {serverError}
+            </div>
+          )}
           
           {/* First Name */}
           <div>
@@ -242,7 +281,12 @@ export default function RegisterForm() {
 
           {/* Submit */}
           <button
-            disabled= {!!errors.firstName || !!errors.lastName || !!errors.email || errors.password}
+            disabled={
+              !!errors.firstName ||
+              !!errors.lastName ||
+              !!errors.email ||
+              !!errors.password
+            }
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-md font-semibold transition
               hover:bg-blue-500 cursor-pointer
