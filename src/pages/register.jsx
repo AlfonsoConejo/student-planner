@@ -12,6 +12,17 @@ export default function RegisterForm() {
   const [isSending, setIsSending] = useState(false);
   const [serverError, setServerError] = useState("");
 
+  // Validate errors right after opening page
+  useEffect(()=> {
+    const newErrors = {
+      firstName: validateField("firstName", formData.firstName),
+      lastName: validateField("lastName", formData.lastName),
+      email: validateField("email", formData.email),
+      password: validateField("password", formData.password),
+    };
+
+    setErrors(newErrors);
+  }, []);
 
   const handleChange = (e) => {
     let { name, value } = e.target;
