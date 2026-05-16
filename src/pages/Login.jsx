@@ -2,33 +2,39 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from "react";
 
 export default function LoginForm() {
+  const API_URL = import.meta.env.VITE_API_URL;
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ email: '', password: ''});
   const [isSending, setIsSending] = useState(false);
-  const [isFormValid, setIsFormValid] = useState({email: false, password: false});
+  const [errors, setErrors] = useState({
+    email: "",
+    password: ""
+  });
   const [serverError, setServerError] = useState("");
+  const isSubmitDisabled =
+  !formData.email.trim() ||
+  !formData.password ||
+  Object.values(errors).some(error => error) ||
+  isSending;
 
   //Validate empty fields
-  const validateForm = (name, value) => {
-    value = value.trim();
+  const validateField = (name, value) => {
+    const trimmed = value.trim();
 
     switch (name) {
       case "email":
-      setIsFormValid(prev => ({
-        ...prev,
-        email: /\S+@\S+\.\S+/.test(value)
-      }));
-      break;
+        const normalized = trimmed.toLowerCase();
+        if (!normalized) return "El correo es obligatorio";
+        if (!/\S+@\S+\.\S+/.test(normalized)) return "Correo inválido";
+        return "";
 
       case "password":
-        setIsFormValid(prev => ({
-          ...prev,
-          password: value.length >= 6
-        }));
-        break;
+        if (!value) return "La contraseña es obligatoria";
+        if (value.length < 6) return "Debe tener al menos 6 caracteres";
+        return "";
 
       default:
-        break;
+        return "";
     }
   };
 
@@ -40,18 +46,70 @@ export default function LoginForm() {
       [name]: value
     }));
 
-    validateForm(name, value);
+    const error = validateField(name, value);
+
+    setErrors(prev => ({
+      ...prev,
+      [name]: error
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Revalidate fields one last time before sending
+    const newErrors = {
+      email: validateField("email", formData.email),
+      password: validateField("password", formData.password),
+    };
+
+    setErrors(newErrors);
+
+    // Prevent data from being sent if there are errors
+    const hasErrors = Object.values(newErrors).some(error => error);
+    if (hasErrors) return;
+
+    //Set the form as sending
+    setIsSending(true);
+
+    //Clean data before sending
+    const cleanedData = {
+      email: formData.email.trim().toLowerCase(),
+      password: formData.password,
+    };
+
+    //Clean setServerError message
+    setServerError("");
+
+    //Connection to validate user
+    try {
+      const res = await fetch(`${API_URL}/api/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(cleanedData),
+        credentials: "include"
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setServerError(data.message || "Usuario o contraseña incorrectos");
+        return;
+      }
+
+    } catch (error) {
+      setServerError("Error en el servidor");
+    } finally {
+      setIsSending(false);
+    }
   };
 
   useEffect(() => {
-      document.title = "Inicio de sesión";
-    }, []);
+    document.title = "Inicio de sesión";
+  }, []);
 
-  console.log("setIsFormValid equals: " + JSON.stringify(isFormValid));
 
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4">
@@ -145,7 +203,7 @@ export default function LoginForm() {
 
           {/* SUBMIT */}
           <button
-            disabled={ !(isFormValid.email && isFormValid.password) }
+            disabled={ isSubmitDisabled }
             type="submit"
             className="flex justify-center w-full bg-blue-600 text-white py-2 rounded-md font-semibold transition
               hover:bg-blue-500 cursor-pointer

@@ -95,11 +95,14 @@ export default function RegisterForm() {
     setErrors(newErrors);
 
     // Prevent data from being sent if there are errors
-    const hasErrors = Object.values(errors).some(error => error);
+    const hasErrors = Object.values(newErrors).some(error => error);
     if (hasErrors) return;
 
     //Set the form as sending
     setIsSending(true);
+
+    //Clean setServerError message
+    setServerError("");
 
     // Clean data for sending
     const cleanedData = {
@@ -128,7 +131,7 @@ export default function RegisterForm() {
       setServerError(""); 
 
     } catch (error) {
-      console.error(error);
+      setServerError("Error en el servidor");
     } finally {
       setIsSending(false);
     }
