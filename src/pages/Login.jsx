@@ -1,8 +1,15 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from "react";
+import {useAuth} from  '../customHooks/useAuth' 
+
 
 export default function LoginForm() {
+
+  const navigate = useNavigate();
+  const { user, setUser, authLoading } = useAuth();
   const API_URL = import.meta.env.VITE_API_URL;
+
+  // States
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ email: '', password: ''});
   const [isSending, setIsSending] = useState(false);
@@ -98,6 +105,10 @@ export default function LoginForm() {
         setServerError(data.message || "Usuario o contraseña incorrectos");
         return;
       }
+
+      console.log("Este es el usuario: " + JSON.stringify(data))
+      setUser(data.user);
+      navigate("/home");
 
     } catch (error) {
       setServerError("Error en el servidor");
