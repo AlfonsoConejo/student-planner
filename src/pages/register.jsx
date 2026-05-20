@@ -1,11 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import React, { useState, useEffect } from 'react';
+import { useAuth } from "../customHooks/useAuth";
 import './../App.css';
 
 export default function RegisterForm() {
 
+  const navigate = useNavigate();
+  const { setUser } = useAuth();
   const API_URL = import.meta.env.VITE_API_URL;
+
+  // States
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', password: ''});
   const [errors, setErrors] = useState({ firstName: '', lastName: '', email: '', password: ''});
   const [touched, setTouched] = useState({ firstName: false, lastName: false, email: false, password: false});
@@ -119,6 +124,7 @@ export default function RegisterForm() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(cleanedData),
+        credentials: "include"
       });
 
       const data = await res.json();
@@ -128,7 +134,29 @@ export default function RegisterForm() {
         return;
       }
 
-      setServerError(""); 
+      
+      // Automatic login after register
+      const resLogin = await fetch(`${API_URL}/api/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: cleanedData.email,
+          password: cleanedData.password
+        }),
+        credentials: "include"
+      });
+
+      const dataLogin = await resLogin.json();
+
+      if (!resLogin.ok) {
+        setServerError("Usuario registrado exitosamente. Error al iniciar sesión.");
+        return;
+      }
+
+      setUser(dataLogin.user);
+      navigate("/home");
 
     } catch (error) {
       setServerError("Error en el servidor");
