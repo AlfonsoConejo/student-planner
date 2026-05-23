@@ -1,10 +1,13 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useRef} from "react";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
 
+  const didCheckAuth = useRef(false);
+
   const API_URL = import.meta.env.VITE_API_URL;
+
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
 
@@ -14,60 +17,70 @@ export const AuthProvider = ({ children }) => {
         method: "POST",
         credentials: "include"
       });
-    } catch {}
+    } catch (error) {
+      console.error(error);
+    }
 
     setUser(null);
   };
 
   useEffect(() => {
+
+    if (didCheckAuth.current) return;
+
+    didCheckAuth.current = true;
+
     const checkAuth = async () => {
-      try{
-        // Authenticate user
-        const resMe = await fetch (`${API_URL}/api/auth/me`, {
+      try {
+        // FIRST AUTH CHECK
+        let resMe = await fetch(`${API_URL}/api/auth/me`, {
           credentials: "include"
         });
 
-        const dataMe = await resMe.json();
+        // ACCESS TOKEN VALID
+        if (resMe.ok) {
+          const dataMe = await resMe.json();
 
-        if (!resMe.ok){
-          //Refresh access token
-          const resRefresh = await fetch(`${API_URL}/api/auth/refresh`, {
-            method: "POST",
-            credentials: "include"
-          });
-
-          if(!resRefresh.ok){
-            // Log out user
-            await logoutUser();
-            return;
-          }
-
-          // Authenticate user again
-          const resMeVerification = await fetch (`${API_URL}/api/auth/me`, {
-            credentials: "include"
-          });
-
-          const dataMeVerification = await resMeVerification.json();
-          
-          if(!resMeVerification.ok){
-            // Log out user
-            await logoutUser();
-            return;
-          }
-
-          setUser(dataMeVerification.user);
+          setUser(dataMe.user);
           return;
         }
 
-        // Set user
+        // ACCESS TOKEN EXPIRED -> REFRESH
+        const resRefresh = await fetch(`${API_URL}/api/auth/refresh`, {
+          method: "POST",
+          credentials: "include"
+        });
+
+        // REFRESH FAILED
+        if (!resRefresh.ok) {
+          console.log("Acá falló el refresh");
+          await logoutUser();
+          return;
+        }
+
+        // TRY /ME AGAIN
+        resMe = await fetch(`${API_URL}/api/auth/me`, {
+          credentials: "include"
+        });
+
+        // SECOND /ME FAILED
+        if (!resMe.ok) {
+          await logoutUser();
+          return;
+        }
+
+        const dataMe = await resMe.json();
+
         setUser(dataMe.user);
+
       } catch (error) {
+        console.error(error);
         setUser(null);
       } finally {
         setAuthLoading(false);
       }
     };
-    
+
     checkAuth();
   }, []);
 
@@ -76,7 +89,8 @@ export const AuthProvider = ({ children }) => {
       value={{
         user,
         setUser,
-        authLoading
+        authLoading,
+        logoutUser
       }}
     >
       {children}
