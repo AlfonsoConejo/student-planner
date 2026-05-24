@@ -1,11 +1,15 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import {useAuth} from  '../customHooks/useAuth' 
 
 
 export default function LoginForm() {
 
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const from = location.state?.from?.pathname || "/home";
+
   const { user, setUser, authLoading } = useAuth();
   const API_URL = import.meta.env.VITE_API_URL;
 
@@ -108,7 +112,7 @@ export default function LoginForm() {
 
       console.log("Este es el usuario: " + JSON.stringify(data))
       setUser(data.user);
-      navigate("/home");
+      navigate(from, { replace: true });
 
     } catch (error) {
       setServerError("Error en el servidor");
