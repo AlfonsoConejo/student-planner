@@ -1,11 +1,14 @@
+import { useAuth } from "../customHooks/useAuth";
 import { Navigate, Outlet } from "react-router-dom";
 
 export default function PublicOnlyRoute() {
-  const isAuthenticated = true;
+  const { authLoading, user } = useAuth();
 
-  if (isAuthenticated) {
-    return <Navigate to="/dashboard" replace />;
+  if (authLoading) return <p>Loading...</p>;
+
+  if (user) {
+    return <Navigate to="/home" replace />;
   }
 
   return <Outlet />;
-}s
+}
