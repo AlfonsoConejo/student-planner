@@ -1,5 +1,6 @@
 import LandingHeader from "../components/header/LandingHeader";
 import MateriasApp from "../components/MateriasApp";
+import AppHeader from "../components/header/AppHeader";
 import { useEffect } from "react";
 
 
@@ -14,7 +15,6 @@ export default function LandingLayout() {
   return (
     <>
       <LandingHeader />
-      <MateriasApp/>
       
     </>
   );
