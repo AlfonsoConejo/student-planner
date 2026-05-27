@@ -231,7 +231,7 @@ export default function LoginForm() {
           {/* FOOTER */}
           <p className="text-gray-400 text-sm text-center mt-6">
             ¿No tienes cuenta?{" "}
-            <Link to="/register" className="text-blue-400 hover:underline">
+            <Link to="/auth/signup" className="text-blue-400 hover:underline">
               Regístrate
             </Link>
           </p>

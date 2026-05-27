@@ -1,10 +1,13 @@
 import LandingHeader from "../components/header/LandingHeader";
 import MateriasApp from "../components/MateriasApp";
 import AppHeader from "../components/header/AppHeader";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Outlet } from "react-router-dom";
 
 
 export default function LandingLayout() {
+
+  const [selectedSection, setSelectedSection] = useState("Home");
 
   if (import.meta.env.MODE === "development") {
     console.log("Modo desarrollo");
@@ -15,6 +18,10 @@ export default function LandingLayout() {
   return (
     <>
       <LandingHeader />
+
+      <main>
+        <Outlet/>
+      </main>
       
     </>
   );

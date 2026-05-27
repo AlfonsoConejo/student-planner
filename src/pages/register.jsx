@@ -342,7 +342,7 @@ export default function RegisterForm() {
         {/* FOOTER */}
         <p className="text-gray-400 text-sm text-center mt-6">
           ¿Ya tienes cuenta?{' '}
-          <Link to="/login" className="text-blue-400 hover:underline">
+          <Link to="/auth/login" className="text-blue-400 hover:underline">
             Inicia sesión
           </Link>
         </p>
