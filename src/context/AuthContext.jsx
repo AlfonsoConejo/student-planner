@@ -53,7 +53,6 @@ export const AuthProvider = ({ children }) => {
 
         // REFRESH FAILED
         if (!resRefresh.ok) {
-          console.log("Acá falló el refresh");
           await logoutUser();
           return;
         }

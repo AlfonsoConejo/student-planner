@@ -156,7 +156,7 @@ export default function RegisterForm() {
       }
 
       setUser(dataLogin.user);
-      navigate("/home");
+      navigate("/app/home");
 
     } catch (error) {
       setServerError("Error en el servidor");

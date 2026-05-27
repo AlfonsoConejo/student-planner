@@ -7,8 +7,6 @@ import { Outlet } from "react-router-dom";
 
 export default function LandingLayout() {
 
-  const [selectedSection, setSelectedSection] = useState("Home");
-
   if (import.meta.env.MODE === "development") {
     console.log("Modo desarrollo");
   } else {

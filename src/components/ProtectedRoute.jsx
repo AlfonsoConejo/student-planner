@@ -10,7 +10,7 @@ export default function ProtectedRoute() {
     if (!user) {
         return (
             <Navigate
-                to="/login"
+                to="/auth/login"
                 replace
                 state={{ from: location }}
             />

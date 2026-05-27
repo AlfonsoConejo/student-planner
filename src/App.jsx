@@ -9,11 +9,13 @@ import Home from './pages/Home';
 import AuthLayout from './layouts/AuthLayout';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicOnlyRoute from './components/PublicOnlyRoute';
+import AppLayout from './layouts/AppLayout';
 
 export default function App() {
   return (
     <Routes>
 
+      {/* Public */}
       <Route element={<PublicOnlyRoute />}>
 
         {/* Landing */}
@@ -34,7 +36,12 @@ export default function App() {
 
       {/* Private */}
       <Route element={<ProtectedRoute />}>
-        <Route path="/home" element={<Home />} />
+
+        {/* App */}
+        <Route path="/app" element={<AppLayout />}>
+            <Route path="home" element={<Home />} />
+        </Route>
+
       </Route>
 
     </Routes>
