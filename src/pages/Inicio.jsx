@@ -1,7 +1,9 @@
 export default function Inicio() {
     return(
-        <>
-        Probando este texto 1
-        </>
+        <div className="min-h-dvh w-full bg-zinc-900 ">
+            <div className="flex mx-auto max-w-screen-xl">
+                Probando este texto 1
+            </div>
+        </div>
     )
 }

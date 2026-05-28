@@ -104,15 +104,25 @@ export default function LoginForm() {
         credentials: "include"
       });
 
-      const data = await res.json();
+      const loginData = await res.json();
 
       if (!res.ok) {
-        setServerError(data.message || "Usuario o contraseña incorrectos");
+        setServerError(loginData.message || "Usuario o contraseña incorrectos");
         return;
       }
 
-      console.log("Este es el usuario: " + JSON.stringify(data))
-      setUser(data.user);
+      const meRes = await fetch(`${API_URL}/api/auth/me`, {
+        credentials: "include"
+      });
+
+      const meData = await meRes.json();
+
+      if (!meRes.ok) {
+        setServerError(meData.message || "Usuario o contraseña incorrectos");
+        return;
+      }
+
+      setUser(meData.user);
       navigate(from, { replace: true });
 
     } catch (error) {

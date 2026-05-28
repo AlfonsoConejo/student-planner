@@ -42,36 +42,35 @@ export const AuthProvider = ({ children }) => {
           const dataMe = await resMe.json();
 
           setUser(dataMe.user);
-          return;
+        } else {
+
+          // ACCESS TOKEN EXPIRED -> REFRESH
+          const resRefresh = await fetch(`${API_URL}/api/auth/refresh`, {
+            method: "POST",
+            credentials: "include"
+          });
+
+          // REFRESH FAILED
+          if (!resRefresh.ok) {
+            await logoutUser();
+            return;
+          }
+
+          // TRY /ME AGAIN
+          resMe = await fetch(`${API_URL}/api/auth/me`, {
+            credentials: "include"
+          });
+
+          // SECOND /ME FAILED
+          if (!resMe.ok) {
+            await logoutUser();
+            return;
+          }
+
+          const dataMe = await resMe.json();
+
+          setUser(dataMe.user);
         }
-
-        // ACCESS TOKEN EXPIRED -> REFRESH
-        const resRefresh = await fetch(`${API_URL}/api/auth/refresh`, {
-          method: "POST",
-          credentials: "include"
-        });
-
-        // REFRESH FAILED
-        if (!resRefresh.ok) {
-          await logoutUser();
-          return;
-        }
-
-        // TRY /ME AGAIN
-        resMe = await fetch(`${API_URL}/api/auth/me`, {
-          credentials: "include"
-        });
-
-        // SECOND /ME FAILED
-        if (!resMe.ok) {
-          await logoutUser();
-          return;
-        }
-
-        const dataMe = await resMe.json();
-
-        setUser(dataMe.user);
-
       } catch (error) {
         console.error(error);
         setUser(null);
