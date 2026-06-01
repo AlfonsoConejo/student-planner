@@ -3,7 +3,7 @@ import {useAuth} from  '../customHooks/useAuth'
 import AppHeader from '../components/header/AppHeader';
 export default function AppLayout() {
 
-  const {user, authLoading} = useAuth();
+  const {user, setUser, authLoading} = useAuth();
   console.log(user, authLoading);
 
   if (authLoading) {
@@ -15,6 +15,8 @@ export default function AppLayout() {
     <>
       <AppHeader
         user={user}
+        setUser={setUser}
+        authLoading={authLoading}
       />
 
       <main>

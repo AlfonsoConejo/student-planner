@@ -1,9 +1,13 @@
 import Logo from '../../assets/logo-azul.png'
 import { useState, useRef, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-export default function AppHeader({user}) {
+export default function AppHeader({user, setUser, authLoading}) {
 
+  const navigate = useNavigate();
+
+  const API_URL = import.meta.env.VITE_API_URL;
+  
   const avatarRef = useRef(null);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
 
@@ -24,17 +28,35 @@ export default function AppHeader({user}) {
   const avatarColor = colors[colorIndex];
 
   const handleSettings = () => {
-    console.log("Ajustes");
-    <Navigate
-      to="app/settings"
-    />;
+    navigate("app/settings");
   };
 
-  const handleLogOut = () => {
-    console.log("Cerrar sesión");
-    <Navigate
-      to="/"
-    />;
+
+  const handleLogOut = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/auth/logout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      const resData = await res.json();
+
+      if (!res.ok) {
+        setServerError(resData.message || "Error al cerrar sesión");
+        return;
+      }
+
+      console.log("Cerrar sesión");
+      setUser(null);
+      navigate("/");
+      
+    } catch (error) {
+      console.error(error);
+      setServerError("Error de red");
+    }
   };
 
   useEffect(()=>{
@@ -72,24 +94,25 @@ export default function AppHeader({user}) {
             <img src={Logo} className="mr-3 h-6 sm:h-9" alt="Site Logo" />
             <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Organizador</span>
           </a>
-          <div
-            style={{ backgroundColor: avatarColor }}
-            className={
-              `flex items-center justify-center
-              relative
-              h-7 w-7 rounded-md
-              text-white font-medium
-              transition-all duration-300
-              cursor-pointer select-none
-              ${isProfileMenuOpen ? "ring-3 ring-gray-300/30" : "hover:ring-3 hover:ring-gray-300/30"}
-              `
-            }
-            ref={avatarRef}
-            onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-          >
-            {firstLetter}
+          <div className='relative text-white' ref={avatarRef}>
+            <div
+              style={{ backgroundColor: avatarColor }}
+              className={
+                `flex items-center justify-center
+                h-7 w-7 rounded-md
+                text-white font-medium
+                transition-all duration-300
+                cursor-pointer select-none
+                ${isProfileMenuOpen ? "ring-3 ring-gray-300/30" : "hover:ring-3 hover:ring-gray-300/30"}
+                `
+              }
+              onClick={() => setIsProfileMenuOpen(prev => !prev)}
+            >
+              {firstLetter}
+            </div>
 
             {
+              // Drop down menu
               isProfileMenuOpen && (
               <div className="absolute right-0 top-full mt-2 w-64 rounded-lg bg-gray-700 shadow-lg overflow-hidden">
           
