@@ -1,9 +1,9 @@
 import Logo from '../../assets/logo-azul.png'
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner"
+import { notify } from '@/utils';
 
-export default function AppHeader({user, setUser, authLoading}) {
+export default function AppHeader({user, setUser}) {
 
   const navigate = useNavigate();
 
@@ -46,17 +46,17 @@ export default function AppHeader({user, setUser, authLoading}) {
       const resData = await res.json();
 
       if (!res.ok) {
-        toast.error("Error al cerrar sesión");
+        notify("error", "Error al cerrar sesión.");
         return;
       }
 
       console.log("Antes:", user);
       setUser(null);
-      toast.success("Sesión cerrada correctamente");
+      notify("success", "Sesión cerrada.");
       
     } catch (error) {
       console.error(error);
-      toast.error("Error al cerrar sesión");
+      notify("error", "Error al cerrar sesión.");
     }
   };
 

@@ -13,14 +13,6 @@ createRoot(document.getElementById('root')).render(
         <App />
         <Toaster
           position="bottom-right"
-          toastOptions={{
-            classNames: {
-              toast:
-                'bg-slate-800 border border-slate-700 text-white',
-              description:
-                'text-slate-400',
-            },
-          }}
         />
       </AuthProvider>
     </BrowserRouter>
