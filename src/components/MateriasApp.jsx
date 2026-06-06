@@ -39,51 +39,6 @@ const MateriasApp = () => {
   return (
     <div className="flex h-screen bg-gray-900 text-white font-sans">
 
-      {/* SIDEBAR */}
-      <aside className="w-64 bg-gray-800 border-r border-gray-700 flex flex-col">
-        
-        <div className="px-5 py-6 font-semibold flex items-center gap-2">
-          <span className="text-blue-500">⬢</span>
-          StudentApp
-        </div>
-
-        <div className="px-4 mb-4">
-          <div className="relative">
-            <span className="absolute left-3 top-2.5 text-gray-400">
-              <Icon name="search" />
-            </span>
-            <input
-              placeholder="Buscar"
-              className="w-full bg-gray-700 border border-gray-600 rounded-md py-1.5 pl-10 pr-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
-            />
-          </div>
-        </div>
-
-        <nav className="flex-1 px-3 space-y-6">
-          <div>
-            <p className="px-3 text-xs text-gray-400 mb-2">Principal</p>
-            <NavItem iconName="home" label="Dashboard" active />
-            <NavItem iconName="calendar" label="Calendario" />
-            <NavItem iconName="book" label="Materias" />
-          </div>
-
-          <div>
-            <p className="px-3 text-xs text-gray-400 mb-2">Organización</p>
-            <NavItem iconName="check" label="Tareas" />
-          </div>
-        </nav>
-
-        <div className="p-4 border-t border-gray-700 flex items-center gap-3">
-          <div className="w-9 h-9 bg-blue-600 rounded-full flex items-center justify-center font-semibold">
-            A
-          </div>
-          <div>
-            <p className="text-sm">Alfonso</p>
-            <p className="text-xs text-gray-400">Estudiante</p>
-          </div>
-        </div>
-      </aside>
-
       {/* MAIN */}
       <main className="flex-1 overflow-y-auto bg-gray-900">
         <div className="max-w-6xl mx-auto p-10 space-y-10">

@@ -1,6 +1,7 @@
 import { Outlet} from 'react-router-dom';
-import {useAuth} from  '../customHooks/useAuth' 
+import { useAuth } from  '../customHooks/useAuth' 
 import AppHeader from '../components/header/AppHeader';
+import Sidebar from '../components/Sidebar'
 export default function AppLayout() {
 
   const {user, setUser, authLoading} = useAuth();
@@ -12,16 +13,20 @@ export default function AppLayout() {
   }
 
   return(
-    <>
+    <div className="min-h-dvh flex flex-col">
       <AppHeader
         user={user}
         setUser={setUser}
         authLoading={authLoading}
       />
 
-      <main>
-        <Outlet/>
-      </main>
-    </>
+      <div className="flex flex-1">
+        <Sidebar />
+
+        <main className="flex-1">
+          <Outlet />
+        </main>
+      </div>
+    </div>
   )
 }

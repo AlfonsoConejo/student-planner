@@ -5,11 +5,18 @@ import LoginForm from './pages/Login';
 import Features from './pages/Features';
 import About from './pages/About';
 import Inicio from './pages/Inicio';
-import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
 import AuthLayout from './layouts/AuthLayout';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicOnlyRoute from './components/PublicOnlyRoute';
 import AppLayout from './layouts/AppLayout';
+import Period from './pages/Period';
+import Calendar from './pages/Calendar';
+import Tasks from './pages/Tasks';
+import Tests from './pages/Tests';
+import Subjects from './pages/Subjects';
+import Teachers from './pages/Teachers';
+import Breaks from './pages/Breaks';
 
 export default function App() {
   return (
@@ -39,7 +46,14 @@ export default function App() {
 
         {/* App */}
         <Route path="/app" element={<AppLayout />}>
-            <Route path="home" element={<Home />} />
+            <Route index element={<Dashboard />} />
+            <Route path="period" element={<Period />} />
+            <Route path="calendar" element={<Calendar />} />
+            <Route path="tasks" element={<Tasks />} />
+            <Route path="tests" element={<Tests />} />
+            <Route path="subjects" element={<Subjects />} />
+            <Route path="teachers" element={<Teachers />} />
+            <Route path="breaks" element={<Breaks />} />
         </Route>
 
       </Route>

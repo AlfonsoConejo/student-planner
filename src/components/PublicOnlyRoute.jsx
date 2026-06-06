@@ -8,7 +8,7 @@ export default function PublicOnlyRoute() {
   if (authLoading) return <Loader/>;
 
   if (user) {
-    return <Navigate to="/app/home" replace />;
+    return <Navigate to="/app" replace />;
   }
 
   return <Outlet />;

@@ -9,7 +9,7 @@ export default function LoginForm() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const from = location.state?.from?.pathname || "/app/home";
+  const from = location.state?.from?.pathname || "/app";
 
   const { setUser } = useAuth();
   const API_URL = import.meta.env.VITE_API_URL;

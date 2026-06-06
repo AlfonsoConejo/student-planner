@@ -1,7 +1,4 @@
 import LandingHeader from "../components/header/LandingHeader";
-import MateriasApp from "../components/MateriasApp";
-import AppHeader from "../components/header/AppHeader";
-import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 
 

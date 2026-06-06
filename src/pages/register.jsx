@@ -164,7 +164,7 @@ export default function RegisterForm() {
       }
 
       setUser(meData.user);
-      navigate("/app/home");
+      navigate("/app");
 
     } catch (error) {
       setServerError("Error en el servidor");
