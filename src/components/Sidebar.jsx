@@ -3,16 +3,14 @@ import { NavLink } from "react-router-dom";
 
 export default function Sidebar() {
   return (
-    <aside className="w-64 min-h-full bg-gray-800">
-      <div className="overflow-y-auto py-5 px-3 h-full bg-gray-800 border-r border-gray-700">
+    <aside className="w-56 min-h-full bg-gray-800">
+      <div className="overflow-y-auto py-5 px-3 h-full bg-gray-800">
         
-      
         <ul className=" space-y-2 ">
           <h3 className="text-xs text-white">PERIODO</h3>
           <li>
             <NavLink to="/app/period" className="flex items-center p-2 text-base font-normal text-white rounded-lg border border-dashed bg-gray-700 hover:bg-gray-700  group">
-              <CalendarDays size={19}/>
-              <span className="ml-3 text-xs">Sin periodo seleccionado</span>
+              <span className="ml-1 text-xs">Sin periodo seleccionado</span>
             </NavLink>
           </li>
         </ul>
@@ -20,15 +18,29 @@ export default function Sidebar() {
         <ul className="pt-5 mt-5 space-y-2 border-t border-gray-700">
           <h3 className="text-xs text-white">GENERAL</h3>
           <li>
-            <NavLink to="/app" className="flex items-center p-2 text-base font-normal text-white rounded-lg hover:bg-gray-700  group">
+            <NavLink
+              to="/app/dashboard"
+              className={({ isActive }) =>
+                `
+                flex items-center p-2 text-base font-normal text-white rounded-lg hover:bg-gray-700 group
+                ${isActive ? "bg-gray-700" : ""}
+                `
+              }
+            >
               <LayoutDashboard size={19}/>
-              <span className="ml-3">Tablero</span>
+              <span className="ml-3 text-sm">Tablero</span>
             </NavLink>
           </li>
           <li>
-            <NavLink to="/app/calendar" className="flex items-center p-2 text-base font-normal text-white rounded-lg hover:bg-gray-700  group">
+            <NavLink to="/app/calendar" className={({ isActive }) =>
+              `
+              flex items-center p-2 text-base font-normal text-white rounded-lg hover:bg-gray-700 group
+              ${isActive ? "bg-gray-700" : ""}
+              `
+              }
+            >
               <CalendarDays size={19}/>
-              <span className="ml-3">Calendario</span>
+              <span className="ml-3 text-sm">Calendario</span>
             </NavLink>
           </li>
         </ul>
@@ -37,33 +49,63 @@ export default function Sidebar() {
         <ul className="pt-5 mt-5 space-y-2 border-t border-gray-700">
           <h3 className="text-xs text-white">ACTIVIDADES</h3>
           <li>
-            <NavLink to="/app/tasks" className="flex items-center p-2 text-base font-normal text-white rounded-lg hover:bg-gray-700  group">
+            <NavLink to="/app/tasks" className={({ isActive }) =>
+              `
+              flex items-center p-2 text-base font-normal text-white rounded-lg hover:bg-gray-700 group
+              ${isActive ? "bg-gray-700" : ""}
+              `
+              }
+            >
               <ClipboardList size={19}/>
-              <span className="ml-3">Tareas</span>
+              <span className="ml-3 text-sm">Tareas</span>
             </NavLink>
           </li>
           <li>
-            <NavLink to="/app/tests" className="flex items-center p-2 text-base font-normal text-white rounded-lg hover:bg-gray-700  group">
+            <NavLink to="/app/tests" className={({ isActive }) =>
+              `
+              flex items-center p-2 text-base font-normal text-white rounded-lg hover:bg-gray-700 group
+              ${isActive ? "bg-gray-700" : ""}
+              `
+              }
+            >
               <FileSpreadsheet size={19}/>
-              <span className="ml-3">Exámenes</span>
+              <span className="ml-3 text-sm">Exámenes</span>
             </NavLink>
           </li>
           <li>
-            <NavLink to="/app/subjects" className="flex items-center p-2 text-base font-normal text-white rounded-lg hover:bg-gray-700  group">
+            <NavLink to="/app/subjects" className={({ isActive }) =>
+              `
+              flex items-center p-2 text-base font-normal text-white rounded-lg hover:bg-gray-700 group
+              ${isActive ? "bg-gray-700" : ""}
+              `
+              }
+            >
               <BookOpen size={19}/>
-              <span className="ml-3">Materias</span>
+              <span className="ml-3 text-sm">Materias</span>
             </NavLink>
           </li>
           <li>
-            <NavLink to="/app/teachers" className="flex items-center p-2 text-base font-normal text-white rounded-lg hover:bg-gray-700  group">
+            <NavLink to="/app/teachers" className={({ isActive }) =>
+              `
+              flex items-center p-2 text-base font-normal text-white rounded-lg hover:bg-gray-700 group
+              ${isActive ? "bg-gray-700" : ""}
+              `
+              }
+            >
               <Users size={19}/>
-              <span className="ml-3">Profesores</span>
+              <span className="ml-3 text-sm">Profesores</span>
             </NavLink>
           </li>
           <li>
-            <NavLink to="/app/breaks" className="flex items-center p-2 text-base font-normal text-white rounded-lg hover:bg-gray-700  group">
+            <NavLink to="/app/breaks" className={({ isActive }) =>
+              `
+              flex items-center p-2 text-base font-normal text-white rounded-lg hover:bg-gray-700 group
+              ${isActive ? "bg-gray-700" : ""}
+              `
+              }
+            >
               <Parasol size={19}/>
-              <span className="ml-3">Vacaciones</span>
+              <span className="ml-3 text-sm">Vacaciones</span>
             </NavLink>
           </li>
         </ul>

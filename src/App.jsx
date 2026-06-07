@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import LandingLayout from './layouts/LandingLayout';
 import Register from './pages/register';
 import LoginForm from './pages/Login';
@@ -46,14 +46,15 @@ export default function App() {
 
         {/* App */}
         <Route path="/app" element={<AppLayout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="period" element={<Period />} />
-            <Route path="calendar" element={<Calendar />} />
-            <Route path="tasks" element={<Tasks />} />
-            <Route path="tests" element={<Tests />} />
-            <Route path="subjects" element={<Subjects />} />
-            <Route path="teachers" element={<Teachers />} />
-            <Route path="breaks" element={<Breaks />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route index element={<Navigate to="dashboard" />} />
+          <Route path="period" element={<Period />} />
+          <Route path="calendar" element={<Calendar />} />
+          <Route path="tasks" element={<Tasks />} />
+          <Route path="tests" element={<Tests />} />
+          <Route path="subjects" element={<Subjects />} />
+          <Route path="teachers" element={<Teachers />} />
+          <Route path="breaks" element={<Breaks />} />
         </Route>
 
       </Route>
