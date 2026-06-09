@@ -13,17 +13,17 @@ export default function AppLayout() {
   }
 
   return(
-    <div className="min-h-dvh flex flex-col">
-      <AppHeader
+    <div className="h-dvh flex flex-col">
+      <AppHeader 
         user={user}
         setUser={setUser}
         authLoading={authLoading}
       />
 
-      <div className="flex flex-1">
+      <div className="flex flex-1 min-h-0">
         <Sidebar />
 
-        <main className="flex flex-col flex-1 text-white bg-gray-900 px-6 py-6">
+        <main className="flex flex-col flex-1 overflow-y-auto text-white bg-gray-900 px-6 py-6">
           <Outlet />
         </main>
       </div>

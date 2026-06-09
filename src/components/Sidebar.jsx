@@ -9,7 +9,7 @@ export default function Sidebar() {
         <ul className=" space-y-2 ">
           <h3 className="text-xs text-white">PERIODO</h3>
           <li>
-            <NavLink to="/app/period" className="flex items-center p-2 text-base font-normal text-white rounded-lg border border-dashed bg-gray-700 hover:bg-gray-700  group">
+            <NavLink to="/app/periods" className="flex items-center p-2 text-base font-normal text-white rounded-lg border border-dashed bg-gray-700 hover:bg-gray-700  group">
               <span className="ml-1 text-xs">Sin periodo seleccionado</span>
             </NavLink>
           </li>

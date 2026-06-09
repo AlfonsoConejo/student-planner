@@ -17,6 +17,7 @@ import Tests from './pages/Tests';
 import Subjects from './pages/Subjects';
 import Teachers from './pages/Teachers';
 import Breaks from './pages/Breaks';
+import CreatePeriod from './pages/CreatePeriod';
 
 export default function App() {
   return (
@@ -48,7 +49,10 @@ export default function App() {
         <Route path="/app" element={<AppLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route index element={<Navigate to="dashboard" />} />
-          <Route path="period" element={<Period />} />
+
+          <Route path="periods" element={<Period />} />
+          <Route path="periods/new" element={<CreatePeriod />} />
+
           <Route path="calendar" element={<Calendar />} />
           <Route path="tasks" element={<Tasks />} />
           <Route path="tests" element={<Tests />} />
