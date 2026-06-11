@@ -1,16 +1,20 @@
 import { CalendarDays } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 export default function CreatePeriod() {
+
+  const API_URL = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
 
   // States
   const [formData, setFormData] = useState({ name: '', startDate: '', endDate: '', color: '#EF4444'});
   const [isSending, setIsSending] = useState(false);
   const [serverError, setServerError] = useState("");
+
   // Validate errors right after opening page
   const isSubmitDisabled =
-  !formData.name ||
+  !formData.name.trim() ||
   !formData.startDate ||
   !formData.endDate ||
   !formData.color ||
@@ -51,7 +55,19 @@ export default function CreatePeriod() {
   ];
 
   const handleChange = (e) => {
+    setServerError("");
+
     const { name, value } = e.target;
+
+    if (name === "startDate") {
+      setFormData(prev => ({
+        ...prev,
+        startDate: value,
+        endDate: prev.endDate && prev.endDate < value ? "" : prev.endDate
+      }));
+
+      return;
+    }
 
     setFormData(prev => ({
       ...prev,
@@ -60,11 +76,52 @@ export default function CreatePeriod() {
   };
 
   const handleColorChange = (color) => {
+    setServerError("");
     setFormData(prev => ({
       ...prev,
       color
     }));
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    //Clean data before sending
+    const cleanedData = {
+      name: formData.name.trim(),
+      startDate: formData.startDate,
+      endDate: formData.endDate,
+      color: formData.color
+    };
+
+    setIsSending(true);
+
+    //Clean setServerError message
+    setServerError("");
+
+    try {
+      const res = await fetch(`${API_URL}/api/periods`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(cleanedData),
+        credentials: "include"
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setServerError(data.message || "No se pudo crear el periodo");
+        return;
+      }
+      navigate('/app/periods');
+    } catch (error) {
+      setServerError("Error en el servidor");
+    } finally {
+      setIsSending(false);
+    }
+  }
 
   console.log(formData);
 
@@ -95,7 +152,7 @@ export default function CreatePeriod() {
         </div>
 
         {/* Form */}
-        <form className="flex flex-col gap-6">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
           {/* Name */}
           <div className="flex flex-col gap-2">
             <label
@@ -143,8 +200,9 @@ export default function CreatePeriod() {
                 id="startDate"
                 name="startDate"
                 type="date"
-                className="
                 value={formData.startDate}
+                max={formData.endDate || undefined}
+                className="
                   rounded-lg
                   border
                   border-gray-700
@@ -167,11 +225,13 @@ export default function CreatePeriod() {
               </label>
 
               <input
+                disabled={!formData.startDate} 
                 onChange={handleChange}
                 id="endDate"
                 name="endDate"
                 type="date"
                 value={formData.endDate}
+                min={formData.startDate}
                 className="
                   rounded-lg
                   border
@@ -182,6 +242,9 @@ export default function CreatePeriod() {
                   text-white
                   outline-none
                   focus:border-cyan-600
+
+                  disabled:opacity-50
+                  disabled:cursor-not-allowed
                 "
               />
             </div>
@@ -208,12 +271,14 @@ export default function CreatePeriod() {
                     h-11
                     w-11
                     rounded-lg
+                    transition-transform
+                    cursor-pointer
+
                     ${
                       formData.color === color
-                        ? 'border-3 border-white'
+                        ? 'ring-2 ring-white scale-110'
                         : 'border-2 border-gray-700'
-                      }
-                    cursor-pointer
+                    }
                   `}
                   style={{ backgroundColor: color }}
                 />
@@ -238,10 +303,15 @@ export default function CreatePeriod() {
             </ul>
           </div>
 
+          {serverError && (
+            <div className="bg-red-500/10 border border-red-500 text-red-400 p-2 rounded mb-4 text-sm">
+              {serverError}
+            </div>
+          )}
+
           {/* Buttons */}
           <div className="flex justify-end gap-3 pt-2">
             <Link to="/app/periods"
-              type="button"
               className="
                 rounded-lg
                 border
@@ -252,14 +322,14 @@ export default function CreatePeriod() {
                 hover:bg-gray-800
                 cursor-pointer
                 text-sm
-                transition: colors
+                transition-colors
               "
             >
               Cancelar
             </Link>
 
             <button
-             disabled={isSubmitDisabled}
+              disabled={isSubmitDisabled}
               type="submit"
               className="
                 rounded-lg
@@ -271,7 +341,7 @@ export default function CreatePeriod() {
                 text-white
                 hover:bg-sky-500
                 cursor-pointer
-                transition: colors
+                transition-colors
 
                 disabled:bg-sky-300 disabled:cursor-not-allowed disabled:opacity-50
               "
