@@ -134,7 +134,7 @@ export default function CreatePeriod() {
         </h1>
       </div>
 
-      <div className="max-w-2xl rounded-3xl border border-gray-800 bg-gray-800 p-8">
+      <div className="max-w-2xl rounded-lg border border-gray-800 bg-gray-800 p-8">
         {/* Header*/}
         <div className="flex items-center gap-3 mb-8">
           <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-cyan-900/40">

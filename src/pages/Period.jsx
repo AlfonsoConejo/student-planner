@@ -1,16 +1,61 @@
 import { Link } from "react-router-dom";
 import NoActivePeriodMessage from "@/components/NoActivePeriodMessage";
 import { apiFetch } from "@/services/apiFetch";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react"; // Añadido useMemo
 import { notify } from "@/utils";
 
 export default function Period() {
-
   const [periods, setPeriods] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(()=>{
+  // 1. Optimizado con useMemo para que solo se ejecute cuando cambia 'periods'
+  const upcomingPeriods = useMemo(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return periods.filter((period) => {
+      
+      const start = new Date(period.start_date);
+      start.setHours(0, 0, 0, 0);
+
+      return start > today;
+    });
+  }, [periods]);
+
+  const currentPeriods = useMemo(() => {
+    // 1. Creamos el día de hoy y le borramos las horas, minutos y segundos
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return periods.filter((period) => {
+      // 2. Hacemos lo mismo con las fechas del periodo para comparar solo días enteros
+      const start = new Date(period.start_date);
+      start.setHours(0, 0, 0, 0);
+
+      const end = new Date(period.end_date);
+      end.setHours(0, 0, 0, 0);
+
+      // Ahora la comparación es 100% segura por días
+      return start <= today && end >= today;
+    });
+  }, [periods]);
+
+  const previousPeriods = useMemo(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return periods.filter((period) => {
+      
+      const end = new Date(period.end_date);
+      end.setHours(0, 0, 0, 0);
+      
+      return end < today;
+    });
+  }, [periods]);
+
+  useEffect(() => {
     async function fetchPeriods() {
-      try{
+      try {
         const res = await apiFetch("/api/periods", {
           method: "GET",
           headers: {
@@ -18,45 +63,94 @@ export default function Period() {
           }
         });
 
-        const data = await res.json();
         if (!res.ok) {
           notify("error", "Hubo un error en el servidor.");   
           return;
         }
 
-        setPeriods(data.data);
-      } catch (error){
-        if (error.message === "SESSION_EXPIRED") {
-          return;
+        const data = await res.json();
+        setPeriods(data.data || []);
+      } catch (error) {
+        if (error.message !== "SESSION_EXPIRED") {
+          notify("error", "Error de conexión.");
         }
+      } finally {
+        setIsLoading(false); // 2. Apagamos la carga siempre (éxito o error)
       }
     }
     fetchPeriods();
   }, []);
 
-  console.log("Periodos del usuario: " + JSON.stringify(periods));
-
   return (
     <div className="flex flex-col flex-1 gap-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-semibold">
-          Periodos
-        </h1>
-
+        <h1 className="text-3xl font-semibold">Periodos</h1>
         <Link to="/app/periods/new" className="bg-sky-600 hover:bg-sky-500 px-4 py-2 rounded-lg text-sm font-semibold cursor-pointer transition-colors">
           Nuevo periodo
         </Link>
       </div>
 
       <div className="flex-1">
-        {
-          periods.length === 0 ? (<NoActivePeriodMessage/>) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              HI
-            </div>
-          )
-        }
-        
+        {/* 3. Control de carga para evitar que parpadee el mensaje de "No hay periodos" */}
+        {isLoading ? (
+          <div className="text-center p-6">Cargando periodos...</div>
+        ) : periods.length === 0 ? (
+          <NoActivePeriodMessage />
+        ) : (
+          <div className="w-full min-h-full rounded-lg border border-gray-800 bg-gray-800 p-6 flex flex-col gap-3">
+            
+            {upcomingPeriods.length > 0 && (
+              <div className="w-full flex flex-col gap-3">
+                 <h2 className="text-xl font-semibold">
+                    Próximamente ({upcomingPeriods.length})
+                  </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {upcomingPeriods.map((period) => (
+                    <PeriodCard key={period.id} period={period} />
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            
+            {currentPeriods.length > 0 && (
+              <div className="w-full flex flex-col gap-3">
+                <h2 className="text-xl font-semibold">En curso ({currentPeriods.length})</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {currentPeriods.map((period) => (
+                    <PeriodCard key={period.id} period={period} />
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            {previousPeriods.length > 0 && (
+              <div className="w-full flex flex-col gap-3">
+                <h2 className="text-xl font-semibold">Finalizados ({previousPeriods.length})</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {previousPeriods.map((period) => (
+                    <PeriodCard key={period.id} period={period} />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function PeriodCard({ period }) {
+  return (
+    <div 
+      className="p-4 rounded-xl border border-gray-700 bg-gray-800 hover:border-gray-600 transition-all shadow-md flex flex-col gap-2"
+      style={{ borderLeft: `6px solid ${period.color || '#0284c7'}` }}
+    >
+      <h3 className="text-lg font-bold text-gray-100">{period.name}</h3>
+      <div className="text-xs text-gray-400 flex flex-col gap-0.5">
+        <p>Inicio: {new Date(period.start_date).toLocaleDateString()}</p>
+        <p>Fin: {new Date(period.end_date).toLocaleDateString()}</p>
       </div>
     </div>
   );
