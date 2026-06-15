@@ -3,9 +3,15 @@ import NoActivePeriodMessage from "@/components/NoActivePeriodMessage";
 import { apiFetch } from "@/services/apiFetch";
 import { useState, useEffect, useMemo } from "react"; // Añadido useMemo
 import { notify } from "@/utils";
+import {useAuth} from  '../customHooks/useAuth' 
+import { Pencil, Trash2 } from "lucide-react";
+import ConfirmModal from "@/components/ConfirmModal";
 
 export default function Period() {
+
+  const { user, setUser } = useAuth();
   const [periods, setPeriods] = useState([]);
+  const [periodToDelete, setPeriodToDelete] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // 1. Optimizado con useMemo para que solo se ejecute cuando cambia 'periods'
@@ -81,6 +87,59 @@ export default function Period() {
     fetchPeriods();
   }, []);
 
+  async function handleSelectPeriod(periodId) {
+    try {
+      const res = await apiFetch("/api/auth/active-period", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          active_period_id: periodId,
+        }),
+      });
+
+      if (!res.ok) {
+        notify("error", "No se pudo seleccionar el periodo");
+        return;
+      }
+
+      setUser((prev) => ({
+        ...prev,
+        active_period_id: periodId,
+      }));
+    } catch {
+      notify("error", "Error de conexión");
+    }
+  }
+
+  async function handleDeletedPeriod(period) {
+    console.log("Este es el ID del periodo: " + period.id);
+    try {
+      const res = await apiFetch(`/api/periods/${period.id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        notify("error", "No se pudo eliminar el periodo");
+        return;
+      }
+
+      setPeriods((prev) =>
+        prev.filter((p) => p.id !== period.id)
+      );
+
+      if (user?.active_period_id === period.id) {
+        setUser((prev) => ({
+          ...prev,
+          active_period_id: null,
+        }));
+      }
+    } catch {
+      notify("error", "Error de conexión");
+    }
+  }
+
   return (
     <div className="flex flex-col flex-1 gap-6">
       <div className="flex justify-between items-center">
@@ -100,13 +159,18 @@ export default function Period() {
           <div className="w-full min-h-full rounded-lg border border-gray-800 bg-gray-800 p-6 flex flex-col gap-3">
             
             {upcomingPeriods.length > 0 && (
-              <div className="w-full flex flex-col gap-3">
+              <div className="w-full flex flex-col gap-2">
                  <h2 className="text-xl font-semibold">
                     Próximamente ({upcomingPeriods.length})
                   </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4">
                   {upcomingPeriods.map((period) => (
-                    <PeriodCard key={period.id} period={period} />
+                    <PeriodCard
+                      key={period.id}
+                      isSelected={period.id === user?.active_period_id}
+                      period={period}
+                      onSelect={handleSelectPeriod} 
+                      onDelete={setPeriodToDelete} />
                   ))}
                 </div>
               </div>
@@ -114,43 +178,172 @@ export default function Period() {
             
             
             {currentPeriods.length > 0 && (
-              <div className="w-full flex flex-col gap-3">
+              <div className="w-full flex flex-col gap-2">
                 <h2 className="text-xl font-semibold">En curso ({currentPeriods.length})</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4">
                   {currentPeriods.map((period) => (
-                    <PeriodCard key={period.id} period={period} />
+                    <PeriodCard 
+                      key={period.id}
+                      isSelected={period.id === user?.active_period_id}
+                      period={period}
+                      onSelect={handleSelectPeriod} 
+                      onDelete={setPeriodToDelete} />
                   ))}
                 </div>
               </div>
             )}
             
             {previousPeriods.length > 0 && (
-              <div className="w-full flex flex-col gap-3">
+              <div className="w-full flex flex-col gap-2">
                 <h2 className="text-xl font-semibold">Finalizados ({previousPeriods.length})</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4">
                   {previousPeriods.map((period) => (
-                    <PeriodCard key={period.id} period={period} />
+                    <PeriodCard 
+                      key={period.id}
+                      isSelected={period.id === user?.active_period_id}
+                      period={period}
+                      onSelect={handleSelectPeriod}
+                      onDelete={setPeriodToDelete}  />
                   ))}
                 </div>
               </div>
             )}
           </div>
         )}
+        {periodToDelete && (
+          <ConfirmModal
+            title="Eliminar periodo"
+            message={`¿Seguro que deseas eliminar "${periodToDelete.name}"?`}
+            variant="danger"
+            onClose={() => setPeriodToDelete(null)}
+            onConfirm={() => {
+              handleDeletedPeriod(periodToDelete);
+              setPeriodToDelete(null);
+            }}
+          />
+        )}
       </div>
     </div>
   );
 }
 
-function PeriodCard({ period }) {
+function PeriodCard({
+  period,
+  isSelected,
+  onSelect,
+  onEdit,
+  onDelete,
+}) {
+  const formatDate = (date) =>
+    new Date(date).toLocaleDateString("es-MX", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+
   return (
-    <div 
-      className="p-4 rounded-xl border border-gray-700 bg-gray-800 hover:border-gray-600 transition-all shadow-md flex flex-col gap-2"
-      style={{ borderLeft: `6px solid ${period.color || '#0284c7'}` }}
+    <div
+      className={`
+        group
+        overflow-hidden
+        rounded-xl
+        border
+        bg-gray-800
+        transition-all
+
+        ${
+          isSelected
+            ? "border-sky-500 ring-1 ring-sky-500/30"
+            : "border-gray-700"
+        }
+      `}
     >
-      <h3 className="text-lg font-bold text-gray-100">{period.name}</h3>
-      <div className="text-xs text-gray-400 flex flex-col gap-0.5">
-        <p>Inicio: {new Date(period.start_date).toLocaleDateString()}</p>
-        <p>Fin: {new Date(period.end_date).toLocaleDateString()}</p>
+      <div className="p-5">
+        {/* Header */}
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h3 className="text-lg font-bold text-white">
+              {period.name}
+            </h3>
+
+            <p className="text-sm text-gray-400 mt-1">
+              {formatDate(period.start_date)}
+              {" → "}
+              {formatDate(period.end_date)}
+            </p>
+
+            <div className="mt-4">
+              {isSelected ? (
+                <div
+                  className="
+                    inline-flex
+                    items-center
+                    gap-2
+                    rounded-lg
+                    bg-sky-500/10
+                    px-3
+                    py-2
+                    text-sm
+                    font-medium
+                    text-sky-400
+                  "
+                >
+                  ✓ Periodo seleccionado
+                </div>
+              ) : (
+                <button
+                  onClick={() => onSelect?.(period.id)}
+                  className="
+                    rounded-lg
+                    bg-gray-700
+                    px-3
+                    py-2
+                    text-sm
+                    font-medium
+                    text-gray-200
+                    transition-colors
+                    hover:bg-gray-600
+                    cursor-pointer
+                  "
+                >
+                  Seleccionar periodo
+                </button>
+              )}
+            </div>
+
+          </div>
+
+          <div className="flex gap-2">
+            <button
+              onClick={() => onEdit?.(period)}
+              className="
+                p-2
+                rounded-lg
+                text-gray-400
+                hover:text-white
+                hover:bg-gray-700
+                transition-colors
+                cursor-pointer
+              "
+            >
+              <Pencil size={16} />
+            </button>
+
+            <button
+              onClick={() => onDelete?.(period)}
+              className="
+                p-2
+                rounded-lg
+                text-red-400
+                hover:bg-red-500/10
+                transition-colors
+                cursor-pointer
+              "
+            >
+              <Trash2 size={16} />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
