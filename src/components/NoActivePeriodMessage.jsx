@@ -1,4 +1,6 @@
 import { CalendarPlus } from "lucide-react";
+import { Link } from "react-router-dom";
+
 export default function NoActivePeriodMessage() {
   return(
     <div className="flex flex-col justify-center items-center w-full h-full p-6 border border-dashed border-zinc-700 rounded-xl">
@@ -16,9 +18,9 @@ export default function NoActivePeriodMessage() {
         materias, tareas y exámenes.
       </p>
 
-      <button className="mt-6 bg-sky-600 hover:bg-sky-500 px-4 py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer">
+      <Link to="/app/periods" className="mt-6 bg-sky-600 hover:bg-sky-500 px-4 py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer">
         Crear primer periodo
-      </button>
+      </Link>
     </div>
   );
 }; 

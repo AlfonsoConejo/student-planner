@@ -106,9 +106,14 @@ export default function Period() {
         return;
       }
 
+      const selectedPeriod = periods.find(
+        (p) => p.id === periodId
+      );
+
       setUser((prev) => ({
         ...prev,
         active_period_id: periodId,
+        period_name: selectedPeriod?.name ?? null
       }));
     } catch {
       notify("error", "Error de conexión");
@@ -139,6 +144,7 @@ export default function Period() {
         setUser((prev) => ({
           ...prev,
           active_period_id: null,
+          period_name: null
         }));
       }
     } catch {

@@ -4,9 +4,11 @@ import { useState, useEffect } from "react";
 import { apiFetch } from "../services/apiFetch.js";
 import { useParams } from "react-router-dom";
 import { notify } from "@/utils.jsx";
+import { useAuth } from "@/customHooks/useAuth.jsx";
 
 export default function PeriodForm() {
-  
+
+  const {user, setUser} = useAuth();  
   const navigate = useNavigate();
 
   // States
@@ -21,6 +23,7 @@ export default function PeriodForm() {
 
   const [isLoadingPeriod, setIsLoadingPeriod] = useState(isEditMode);
 
+  // Get the information of the period if user is editing one
   useEffect(() => {
     if (!isEditMode) return;
 
@@ -172,6 +175,13 @@ export default function PeriodForm() {
             : "No se pudo crear el periodo")
         );   
         return;
+      }
+
+      if(user.active_period_id == id){
+        setUser((prev) => ({
+          ...prev,
+          period_name: formData.name.trim()
+        }));
       }
       navigate('/app/periods');
     } catch (error) {

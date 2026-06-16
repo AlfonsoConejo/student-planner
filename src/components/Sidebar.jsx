@@ -1,7 +1,11 @@
+import { useAuth } from "@/customHooks/useAuth";
 import { CalendarDays, LayoutDashboard, BookOpen, Users, Parasol, FileSpreadsheet, ClipboardList} from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 export default function Sidebar() {
+
+  const {user} = useAuth();
+
   return (
     <aside className="w-56 min-h-full bg-gray-800">
       <div className="overflow-y-auto py-5 px-3 h-full bg-gray-800">
@@ -9,8 +13,18 @@ export default function Sidebar() {
         <ul className=" space-y-2 ">
           <h3 className="text-xs text-white">PERIODO</h3>
           <li>
-            <NavLink to="/app/periods" className="flex items-center p-2 text-base font-normal text-white rounded-lg border border-dashed bg-gray-700 hover:bg-gray-700  group">
-              <span className="ml-1 text-xs">Sin periodo seleccionado</span>
+            <NavLink
+              to="/app/periods"
+              className="flex items-center p-2 text-base font-normal text-white rounded-lg bg-gray-700 group"
+              style={{
+                borderWidth: "1px",
+                borderStyle: user?.active_period_id ? "none" : "dashed",
+                backgroundColor: user?.active_period_id ? "#2272F5" : "",
+              }}
+            >
+              <span className="ml-1 text-xs truncate">
+                {user?.period_name || "Sin periodo seleccionado"}
+              </span>
             </NavLink>
           </li>
         </ul>
