@@ -17,7 +17,7 @@ import Tests from './pages/Tests';
 import Subjects from './pages/Subjects';
 import Teachers from './pages/Teachers';
 import Breaks from './pages/Breaks';
-import CreatePeriod from './pages/CreatePeriod';
+import PeriodForm from './pages/PeriodForm';
 
 export default function App() {
   return (
@@ -51,7 +51,8 @@ export default function App() {
           <Route index element={<Navigate to="dashboard" />} />
 
           <Route path="periods" element={<Period />} />
-          <Route path="periods/new" element={<CreatePeriod />} />
+          <Route path="periods/new" element={<PeriodForm />} />
+          <Route path="periods/:id/edit" element={<PeriodForm />} />
 
           <Route path="calendar" element={<Calendar />} />
           <Route path="tasks" element={<Tasks />} />

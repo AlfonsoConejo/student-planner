@@ -1,11 +1,12 @@
 import { CalendarDays } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { apiFetch } from "../services/apiFetch.js";
+import { useParams } from "react-router-dom";
+import { notify } from "@/utils.jsx";
 
-export default function CreatePeriod() {
-
-  const API_URL = import.meta.env.VITE_API_URL;
+export default function PeriodForm() {
+  
   const navigate = useNavigate();
 
   // States
@@ -13,6 +14,50 @@ export default function CreatePeriod() {
   const [isSending, setIsSending] = useState(false);
   const [serverError, setServerError] = useState("");
 
+  //Detect if it is a Creation Form or an Edition Form
+  const { id } = useParams();
+  const isEditMode = Boolean(id);
+  console.log("Modo edición: " + isEditMode);
+
+  const [isLoadingPeriod, setIsLoadingPeriod] = useState(isEditMode);
+
+  useEffect(() => {
+    if (!isEditMode) return;
+
+    const getPeriod = async () => {
+      try {
+        const res = await apiFetch(`/api/periods/${id}`, {
+          method: "GET",
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          notify("error", "No se pudo obtener el periodo");
+          navigate("/app/periods");
+          return;
+        }
+
+        console.log(data);
+
+        setFormData({
+          name: data.data.name,
+          startDate: data.data.start_date,
+          endDate: data.data.end_date,
+          color: data.data.color,
+        });
+
+      } catch (error) {
+        notify("error", "Error de conexión");
+        navigate("/app/periods");
+      } finally {
+        setIsLoadingPeriod(false);
+      }
+    };
+
+    getPeriod();
+  }, [id, isEditMode, navigate]);
+    
   // Validate errors right after opening page
   const isSubmitDisabled =
   !formData.name.trim() ||
@@ -100,9 +145,17 @@ export default function CreatePeriod() {
     //Clean setServerError message
     setServerError("");
 
+    const endpoint = isEditMode
+      ? `/api/periods/${id}`
+      : "/api/periods";
+
+    const method = isEditMode
+      ? "PUT"
+      : "POST";
+
     try {
-      const res = await apiFetch("/api/periods", {
-        method: "POST",
+      const res = await apiFetch(endpoint, {
+        method: method,
         headers: {
           "Content-Type": "application/json",
         },
@@ -112,7 +165,12 @@ export default function CreatePeriod() {
       const data = await res.json();
 
       if (!res.ok) {
-        setServerError(data.message || "No se pudo crear el periodo");    
+        setServerError(
+          data.message ||
+          (isEditMode
+            ? "No se pudo actualizar el periodo"
+            : "No se pudo crear el periodo")
+        );   
         return;
       }
       navigate('/app/periods');
@@ -126,11 +184,19 @@ export default function CreatePeriod() {
     }
   }
 
+  if (isLoadingPeriod) {
+    return (
+      <div className="flex justify-center p-8">
+        Cargando periodo...
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-6">
       <div>
         <h1 className="text-3xl font-semibold text-white">
-          Nuevo periodo
+          {isEditMode ? "Editar Periodo" : "Nuevo periodo"}
         </h1>
       </div>
 
@@ -347,7 +413,12 @@ export default function CreatePeriod() {
                 disabled:bg-sky-300 disabled:cursor-not-allowed disabled:opacity-50
               "
             >
-              {isSending ? <div className="loader "></div> : 'Crear periodo' }
+              {isSending
+                ? <div className="loader"></div>
+                : isEditMode
+                  ? "Guardar cambios"
+                  : "Crear periodo"
+              }
             </button>
           </div>
         </form>

@@ -156,7 +156,7 @@ export default function Period() {
         ) : periods.length === 0 ? (
           <NoActivePeriodMessage />
         ) : (
-          <div className="w-full min-h-full rounded-lg border border-gray-800 bg-gray-800 p-6 flex flex-col gap-3">
+          <div className="w-full rounded-lg border border-gray-800 bg-gray-800 p-6 flex flex-col gap-3">
             
             {upcomingPeriods.length > 0 && (
               <div className="w-full flex flex-col gap-2">
