@@ -3,15 +3,15 @@ import NoActivePeriodMessage from "@/components/NoActivePeriodMessage";
 import { apiFetch } from "@/services/apiFetch";
 import { useState, useEffect, useMemo } from "react"; // Añadido useMemo
 import { notify } from "@/utils";
-import {useAuth} from  '../customHooks/useAuth' 
 import { Pencil, Trash2 } from "lucide-react";
 import ConfirmModal from "@/components/ConfirmModal";
+import { usePeriod } from "@/context/PeriodContext";
 
 export default function Period() {
 
   const navigate = useNavigate();
+  const { selectedPeriod, setSelectedPeriod } = usePeriod();
 
-  const { user, setUser } = useAuth();
   const [periods, setPeriods] = useState([]);
   const [periodToDelete, setPeriodToDelete] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -61,6 +61,7 @@ export default function Period() {
     });
   }, [periods]);
 
+  // Fetch all periods of the user
   useEffect(() => {
     async function fetchPeriods() {
       try {
@@ -89,35 +90,18 @@ export default function Period() {
     fetchPeriods();
   }, []);
 
+  // Mark a period as selected
   async function handleSelectPeriod(periodId) {
-    try {
-      const res = await apiFetch("/api/auth/active-period", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          active_period_id: periodId,
-        }),
-      });
+    const clickedPeriod = periods.find(
+      (p) => p.id === periodId
+    );
 
-      if (!res.ok) {
-        notify("error", "No se pudo seleccionar el periodo");
-        return;
-      }
-
-      const selectedPeriod = periods.find(
-        (p) => p.id === periodId
-      );
-
-      setUser((prev) => ({
-        ...prev,
-        active_period_id: periodId,
-        period_name: selectedPeriod?.name ?? null
-      }));
-    } catch {
-      notify("error", "Error de conexión");
+    if (!clickedPeriod) {
+      notify("error", "No se encontró el periodo");
+      return;
     }
+
+    setSelectedPeriod(clickedPeriod);
   }
 
   async function handleEditPeriod(period) {
@@ -140,12 +124,8 @@ export default function Period() {
         prev.filter((p) => p.id !== period.id)
       );
 
-      if (user?.active_period_id === period.id) {
-        setUser((prev) => ({
-          ...prev,
-          active_period_id: null,
-          period_name: null
-        }));
+      if (selectedPeriod?.id === period.id) {
+        setSelectedPeriod(null);
       }
     } catch {
       notify("error", "Error de conexión");
@@ -179,7 +159,7 @@ export default function Period() {
                   {upcomingPeriods.map((period) => (
                     <PeriodCard
                       key={period.id}
-                      isSelected={period.id === user?.active_period_id}
+                      isSelected={period.id === selectedPeriod?.id}
                       period={period}
                       onSelect={handleSelectPeriod} 
                       onEdit={handleEditPeriod}
@@ -197,7 +177,7 @@ export default function Period() {
                   {currentPeriods.map((period) => (
                     <PeriodCard 
                       key={period.id}
-                      isSelected={period.id === user?.active_period_id}
+                      isSelected={period.id === selectedPeriod?.id}
                       period={period}
                       onSelect={handleSelectPeriod}
                       onEdit={handleEditPeriod} 
@@ -214,7 +194,7 @@ export default function Period() {
                   {previousPeriods.map((period) => (
                     <PeriodCard 
                       key={period.id}
-                      isSelected={period.id === user?.active_period_id}
+                      isSelected={period.id === selectedPeriod?.id}
                       period={period}
                       onSelect={handleSelectPeriod}
                       onEdit={handleEditPeriod}

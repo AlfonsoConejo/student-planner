@@ -4,11 +4,11 @@ import { useState, useEffect } from "react";
 import { apiFetch } from "../services/apiFetch.js";
 import { useParams } from "react-router-dom";
 import { notify } from "@/utils.jsx";
-import { useAuth } from "@/customHooks/useAuth.jsx";
+import { usePeriod } from "@/context/PeriodContext.jsx";
 
 export default function PeriodForm() {
 
-  const {user, setUser} = useAuth();  
+  const { selectedPeriod, setSelectedPeriod } = usePeriod();
   const navigate = useNavigate();
 
   // States
@@ -177,12 +177,16 @@ export default function PeriodForm() {
         return;
       }
 
-      if(user.active_period_id == id){
-        setUser((prev) => ({
-          ...prev,
-          period_name: formData.name.trim()
-        }));
+      if (Number(selectedPeriod?.id) === Number(id)) {
+        setSelectedPeriod({
+          ...selectedPeriod,
+          name: formData.name.trim(),
+          start_date: formData.startDate,
+          end_date: formData.endDate,
+          color: formData.color,
+        });
       }
+
       navigate('/app/periods');
     } catch (error) {
       if (error.message === "SESSION_EXPIRED") {
