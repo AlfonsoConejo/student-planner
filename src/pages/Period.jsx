@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import NoActivePeriodMessage from "@/components/NoActivePeriodMessage";
 import { apiFetch } from "@/services/apiFetch";
 import { useState, useEffect, useMemo } from "react"; // Añadido useMemo
@@ -8,6 +8,8 @@ import { Pencil, Trash2 } from "lucide-react";
 import ConfirmModal from "@/components/ConfirmModal";
 
 export default function Period() {
+
+  const navigate = useNavigate();
 
   const { user, setUser } = useAuth();
   const [periods, setPeriods] = useState([]);
@@ -113,6 +115,10 @@ export default function Period() {
     }
   }
 
+  async function handleEditPeriod(period) {
+    navigate(`/app/periods/${period.id}/edit`);
+  }
+
   async function handleDeletedPeriod(period) {
     console.log("Este es el ID del periodo: " + period.id);
     try {
@@ -170,6 +176,7 @@ export default function Period() {
                       isSelected={period.id === user?.active_period_id}
                       period={period}
                       onSelect={handleSelectPeriod} 
+                      onEdit={handleEditPeriod}
                       onDelete={setPeriodToDelete} />
                   ))}
                 </div>
@@ -186,7 +193,8 @@ export default function Period() {
                       key={period.id}
                       isSelected={period.id === user?.active_period_id}
                       period={period}
-                      onSelect={handleSelectPeriod} 
+                      onSelect={handleSelectPeriod}
+                      onEdit={handleEditPeriod} 
                       onDelete={setPeriodToDelete} />
                   ))}
                 </div>
@@ -203,6 +211,7 @@ export default function Period() {
                       isSelected={period.id === user?.active_period_id}
                       period={period}
                       onSelect={handleSelectPeriod}
+                      onEdit={handleEditPeriod}
                       onDelete={setPeriodToDelete}  />
                   ))}
                 </div>
