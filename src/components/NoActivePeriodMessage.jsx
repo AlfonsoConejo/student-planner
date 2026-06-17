@@ -18,7 +18,7 @@ export default function NoActivePeriodMessage() {
         materias, tareas y exámenes.
       </p>
 
-      <Link to="/app/periods" className="mt-6 bg-sky-600 hover:bg-sky-500 px-4 py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer">
+      <Link to="/app/periods/new" className="mt-6 bg-sky-600 hover:bg-sky-500 px-4 py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer">
         Crear primer periodo
       </Link>
     </div>
