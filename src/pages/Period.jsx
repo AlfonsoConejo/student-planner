@@ -16,7 +16,6 @@ export default function Period() {
   const [periodToDelete, setPeriodToDelete] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // 1. Optimizado con useMemo para que solo se ejecute cuando cambia 'periods'
   const upcomingPeriods = useMemo(() => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -90,7 +89,7 @@ export default function Period() {
     fetchPeriods();
   }, []);
 
-  // Mark a period as selected
+  // Mark period as selected
   async function handleSelectPeriod(periodId) {
     const clickedPeriod = periods.find(
       (p) => p.id === periodId

@@ -9,12 +9,10 @@ export default function Inicio() {
   }, []);
 
   return(
-    <div className="min-h-dvh w-full bg-slate-950">
-      <div className="min-h-dvh flex mx-auto max-w-7xl">
-        <section className="relative w-full bg-slate-950 px-6 pt-32 pb-20">
-          {/* Glow */}
-          <div className="absolute left-1/2 top-0 h-200 w-full -translate-x-1/2 rounded-full bg-blue-600/20 blur-3xl" />
-
+    <div className="min-h-dvh w-full bg-slate-950 bg-gradient-to-b from-blue-900/30 via-slate-950 to-slate-950">
+      {/* CENTER WRAPPER */}
+      <div className="mx-auto flex min-h-dvh max-w-7xl justify-center ">
+        <section className="relative w-full px-6 pt-32 pb-20">
           <div className="relative z-10 mx-auto w-full">
             {/* Texto */}
             <div className="mx-auto max-w-4xl text-center">
@@ -62,8 +60,8 @@ export default function Inicio() {
                   alt="Vista previa de Organizador"
                   className="
                   w-full
+                  rounded-sm
                   lg:rounded-3xl
-                  md:rounded-sm
                   border border-slate-700
                   shadow-2xl
                   "
