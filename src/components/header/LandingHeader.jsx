@@ -27,7 +27,7 @@ export default function LandingHeader() {
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <img src={logo} className="mr-3 h-7 sm:h-8" alt="Site logo" />
-            <span className="self-center text-xl font-semibold whitespace-nowrap text-white logo">Kitab</span>
+            <span className="self-center text-xl font-semibold whitespace-nowrap text-white logo translate-y-[2px]">Kitab</span>
           </Link>
         </div>
 
@@ -41,7 +41,7 @@ export default function LandingHeader() {
           
           <Link
             to="/auth/signup"
-            className="hidden sm:inline-block bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-md text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 transition-all  duration-200 shadow-md shadow-blue-900/30"
+            className="hidden sm:inline-block bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-md text-sm px-4 lg:px-5 py-2 lg:py-2.5 transition-all  duration-200 shadow-md shadow-blue-900/30"
           >
             Registrarse
           </Link>  
@@ -132,8 +132,13 @@ export default function LandingHeader() {
             </li>
             <li>
               <NavLink
-                to="/about"
-                className="block px-6 py-4 text-gray-300 hover:bg-gray-700"
+                to="/features"
+                className={({ isActive }) =>
+                  `block px-6 pr-4 py-4 text-md md:text-lg
+                  hover:text-white hover:bg-gray-700
+                  lg:hover:bg-transparent lg:border-0 lg:p-0
+                  ${isActive ? "text-white" : "text-gray-400"}`
+                }
                 onClick={() => setIsMenuOpen(false)}
               >
                 Acerca de
