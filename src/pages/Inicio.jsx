@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import demo_periodos from "../assets/demo_periodos.png"
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 
 export default function Inicio() {
 
@@ -19,7 +19,7 @@ export default function Inicio() {
   const faqs = [
     {
       question: "¿Kitab es realmente gratuito?",
-      answer: "Sí. Kitab sigue una filosofía de código abierto (Open Source). Fue desarrollado como parte de mi portafolio profesional y puedes utilizarlo sin costo."
+      answer: "Sí. Kitab sigue una filosofía de código abierto (Open Source). Está siendo desarrollado activamente como parte de mi portafolio profesional y puedes utilizarlo sin costo."
     },
     {
       question: "¿Cómo se guardan mis datos?",
@@ -42,8 +42,46 @@ export default function Inicio() {
         {/* Hero section */}
         <section className="w-full pl-6 lg:pl-14 pr-0 pt-16 sm:pt-22 pb-6 overflow-hidden">
           <div className="z-10 mx-auto w-full flex flex-col md:flex-row gap-3 items-start">
-            {/* Texto */}
-            <div className="w-full flex-1 text-left">
+            {/* Text */}
+            <div className="w-full flex-1 text-left pr-4 md:pr-0">
+
+              <Link 
+                to="features/" 
+                className="
+                  group
+                  inline-flex 
+                  items-center 
+                  gap-2 
+                  rounded-full 
+                  border 
+                  border-slate-600 
+                  bg-slate-900/40 
+                  px-3 
+                  py-1 
+                  text-sm 
+                  font-medium 
+                  text-slate-300 
+                  transition-all 
+                  duration-300 
+                  hover:border-white
+                  hover:text-white
+                  mb-6
+                  cursor-pointer
+                "
+              >
+                <span className="translate-y-[-1.5px]">Descubre las funciones</span>
+                
+                <ChevronRight 
+                  className="
+                    w-3.5 
+                    h-3.5 
+                    text-slate-300
+                    transition-transform 
+                    duration-300 
+                    group-hover:text-white
+                  " 
+                />
+              </Link>
 
               <h1 className=" text-5xl font-bold tracking-tight text-white md:text-5xl">
                 Todo tu semestre
@@ -102,6 +140,13 @@ export default function Inicio() {
             </div>
 
           </div>
+        </section>
+
+        {/* Progress Section */}
+        <section className="flex flex-col md:flex-row w-full px-6 pt-16 sm:pt-18 pb-6 overflow-hidden">
+          <h2>Demostración del progreso</h2>
+          <p>Última actualización: 19 de junio de 2026</p>
+          <p>Nuevo video cada 2 semanas - Así evoluciona Kitab</p>
         </section>
 
         {/* Frequently asked questions */}

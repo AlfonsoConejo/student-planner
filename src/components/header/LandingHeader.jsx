@@ -132,7 +132,7 @@ export default function LandingHeader() {
             </li>
             <li>
               <NavLink
-                to="/features"
+                to="/about"
                 className={({ isActive }) =>
                   `block px-6 pr-4 py-4 text-md md:text-lg
                   hover:text-white hover:bg-gray-700
