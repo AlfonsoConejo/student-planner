@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import demo_periodos from "../assets/demo_periodos.png"
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight, Play } from "lucide-react";
 import allSprints from '../data/sprints';
 
 export default function Inicio() {
@@ -36,8 +36,9 @@ export default function Inicio() {
     }
   ];
 
-  const recentSprints = allSprints.slice(0, 2);
-  console.log(recentSprints);
+  //Sprints data
+  const latestSprint = allSprints[0];
+  const recentSprints = allSprints.slice(0, 3);
 
   return(
     <div className="h-auto w-full text-white">
@@ -50,7 +51,7 @@ export default function Inicio() {
             <div className="w-full flex-1 text-left pr-4 md:pr-0">
 
               <Link 
-                to="features/" 
+                to="features" 
                 className="
                   group
                   inline-flex 
@@ -146,11 +147,99 @@ export default function Inicio() {
           </div>
         </section>
 
-        {/* Progress Section */}
+        {/* Demo Section */}
         <section className="flex flex-col w-full px-6 pt-16 sm:pt-18 pb-6 overflow-hidden">
-          <h2 className="text-3xl font-bold tracking-tight text-white">Demo del Progreso</h2>
-          <p>Cada dos semanas, una nueva versión. Este es el recorrido real de Kitab, desde el primer commit hasta hoy.</p>
-          <p>Última actualización: 21 de junio de 2026</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
+            Demo del Progreso
+          </h2>
+          <p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto">
+            Cada dos semanas, una nueva versión. Este es el recorrido real de Kitab,
+            desde el primer commit hasta hoy.
+          </p>
+          
+          <div>
+            
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              
+              {/* Last sprint column*/}
+              <div className="rounded-xl overflow-hidden shadow-lg border border-white/10 bg-black/20">
+                <div className="aspect-video w-full bg-black/50 flex items-center justify-center">
+                  {/* Reemplaza este iframe con tu video de YouTube */}
+                  <iframe
+                    className="w-full h-full"
+                    src={latestSprint.videoUrl}
+                    title="Demo Kitab"
+                    allowFullScreen
+                  />
+                </div>
+                <div className="p-4 bg-white/5">
+                  <p className="text-sm text-gray-400">
+                    Última versión:{" "}
+                    <span className="text-white font-semibold">
+                      {latestSprint.version} · {latestSprint.date}
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+              {/* Columna derecha - Tabla de versiones anteriores */}
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+                <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                  Anteriores
+                </h3>
+
+                <div className="space-y-4">
+                  {recentSprints.map((sprint) => (
+                    <div
+                      key={sprint.version}
+                      className="border-b border-white/10 pb-4 last:border-0 last:pb-0"
+                    >
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <div className="flex items-center gap-3 flex-wrap">
+                            <span className="text-sm font-mono bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded">
+                              {sprint.version}
+                            </span>
+                            <span className="text-sm text-gray-400">
+                              {sprint.date}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-300 mt-1">
+                            {sprint.description}
+                          </p>
+                        </div>
+                        <a
+                          href={sprint.videoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-400 hover:text-blue-300 text-sm font-medium whitespace-nowrap ml-4 flex items-center gap-1"
+                        >
+                          <Play size={14} className="translate-y-[1px]" /> Ver
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Botones de acción */}
+                <div className="mt-6 flex flex-wrap items-center gap-3">
+                  <Link to="sprints" className="inline-flex items-center text-sm font-medium rounded-xl bg-blue-600 text-white hover:bg-blue-500 border border-blue-400/30 hover:border-blue-400/60 px-4 py-2 transition-colors">
+                    Ver más sprints 
+                  </Link>
+
+                  <a
+                    href="https://github.com/AlfonsoConejo/student-planner"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-sm text-white hover:text-gray-300 transition-colors border border-slate-600 bg-slate-600 hover:bg-slate-500 hover:border-slate-500/50 px-4 py-2 rounded-xl"
+                  >
+                    Ver en GitHub
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* Frequently asked questions */}

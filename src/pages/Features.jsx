@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 export default function Features() {
 
-    const features = [
+  const features = [
     {
       id: 1,
       title: 'Autenticación con JWT',
@@ -66,7 +66,7 @@ export default function Features() {
         <section className="flex flex-col w-full px-6 pt-10 sm:pt-12 pb-6 gap-6 overflow-hidden">
           <div>
             <h2 className="text-3xl font-bold tracking-tight text-white">Sigue la evolución de Kitab</h2>
-            <p className="pt-3">
+            <p className="pt-3 text-slate-300">
               Esta hoja de ruta te muestra el camino recorrido y lo que estoy construyendo para ti. Explora las funciones ya disponibles, las que estoy desarrollando y las que pronto formarán parte de la experiencia.
             </p>
           </div>
