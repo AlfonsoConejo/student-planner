@@ -18,6 +18,7 @@ import Subjects from './pages/Subjects';
 import Teachers from './pages/Teachers';
 import Breaks from './pages/Breaks';
 import PeriodForm from './pages/PeriodForm';
+import Sprints from './pages/Sprints';
 
 export default function App() {
   return (
@@ -31,6 +32,7 @@ export default function App() {
           <Route index element={<Inicio />} />
           <Route path="features" element={<Features />} />
           <Route path="about" element={<About />} />
+          <Route path="sprints" element={<Sprints />} />
         </Route>
 
         {/* Auth */}

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import demo_periodos from "../assets/demo_periodos.png"
 import { ChevronDown, ChevronRight } from "lucide-react";
+import allSprints from '../data/sprints';
 
 export default function Inicio() {
 
@@ -12,7 +13,7 @@ export default function Inicio() {
   };
 
   useEffect(() => {
-    document.title = "Organizador";
+    document.title = "Inicio - Kitab";
   }, []);
 
   // Questions
@@ -35,8 +36,11 @@ export default function Inicio() {
     }
   ];
 
+  const recentSprints = allSprints.slice(0, 2);
+  console.log(recentSprints);
+
   return(
-    <div className="h-auto w-full bg-slate-950 bg-linear-to-b from-blue-900/30 via-slate-950 to-slate-950  text-white">
+    <div className="h-auto w-full text-white">
       {/* CENTER WRAPPER */}
       <div className="mx-auto flex flex-col w-full max-w-7xl justify-center">
         {/* Hero section */}
@@ -83,7 +87,7 @@ export default function Inicio() {
                 />
               </Link>
 
-              <h1 className=" text-5xl font-bold tracking-tight text-white md:text-5xl">
+              <h1 className="text-5xl font-bold tracking-tight text-white">
                 Todo tu semestre
                 <br />
                 en un solo lugar.
@@ -143,10 +147,10 @@ export default function Inicio() {
         </section>
 
         {/* Progress Section */}
-        <section className="flex flex-col md:flex-row w-full px-6 pt-16 sm:pt-18 pb-6 overflow-hidden">
-          <h2>Demostración del progreso</h2>
-          <p>Última actualización: 19 de junio de 2026</p>
-          <p>Nuevo video cada 2 semanas - Así evoluciona Kitab</p>
+        <section className="flex flex-col w-full px-6 pt-16 sm:pt-18 pb-6 overflow-hidden">
+          <h2 className="text-3xl font-bold tracking-tight text-white">Demo del Progreso</h2>
+          <p>Cada dos semanas, una nueva versión. Este es el recorrido real de Kitab, desde el primer commit hasta hoy.</p>
+          <p>Última actualización: 21 de junio de 2026</p>
         </section>
 
         {/* Frequently asked questions */}
@@ -163,7 +167,7 @@ export default function Inicio() {
                 <div key={index} 
                 className="border border-slate-900 bg-white/7 overflow-hidden transition-colors duration-300">
 
-                  {/* Botón de la Pregunta */}
+                  {/* Question button */}
                   <button
                     onClick={() => toggleFAQ(index)}
                     className="w-full flex justify-between items-center p-5 text-left text-white font-medium hover:bg-slate-900/40 transition-colors gap-2 cursor-pointer"
