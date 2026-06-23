@@ -5,7 +5,7 @@ import { useEffect } from "react"
 export default function About() {
 
   useEffect(() => {
-    document.title = "Inicio - Kitab";
+    document.title = "Acerca de - Kitab";
   }, []);
 
   return(
