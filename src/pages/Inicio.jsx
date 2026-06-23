@@ -131,10 +131,10 @@ export default function Inicio() {
                   className="
                     w-full 
                     md:w-[calc(50vw-3.5rem)]
-                    h-[300px] 
-                    sm:h-[400px]
+                    h-75 
+                    sm:h-100
                     object-cover
-                    object-left-top
+                    object-top-left
                     rounded-sm
                     lg:rounded-sm
                     [mask-image:linear-gradient(to_bottom,rgba(0,0,0,1)_85%,rgba(0,0,0,0)_100%),linear-gradient(to_right,rgba(0,0,0,1)_85%,rgba(0,0,0,0)_100%)]
@@ -215,7 +215,7 @@ export default function Inicio() {
                           rel="noopener noreferrer"
                           className="text-blue-400 hover:text-blue-300 text-sm font-medium whitespace-nowrap ml-4 flex items-center gap-1"
                         >
-                          <Play size={14} className="translate-y-[1px]" /> Ver
+                          <Play size={14} className="translate-y-px" /> Ver
                         </a>
                       </div>
                     </div>
@@ -232,7 +232,7 @@ export default function Inicio() {
                     href="https://github.com/AlfonsoConejo/student-planner"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center text-sm text-white hover:text-gray-300 transition-colors border border-slate-600 bg-slate-600 hover:bg-slate-500 hover:border-slate-500/50 px-4 py-2 rounded-xl"
+                    className="inline-flex items-center text-sm text-white transition-colors border border-slate-700 bg-slate-800 hover:bg-slate-700 hover:border-slate-700/50 px-4 py-2 rounded-xl"
                   >
                     Ver en GitHub
                   </a>
