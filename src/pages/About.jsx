@@ -1,7 +1,13 @@
 import { Zap, Palette, Lock } from "lucide-react"
 import personal_photo from "@/assets/personal_photo.jpg"
+import { useEffect } from "react"
 
 export default function About() {
+
+  useEffect(() => {
+    document.title = "Inicio - Kitab";
+  }, []);
+
   return(
     <div className="h-auto w-full text-white">
       {/* CENTER WRAPPER */}
@@ -17,15 +23,16 @@ export default function About() {
 
           {/* Text */}
           <p className="text-slate-300 text-left">
-            Kitab nace con el objetivo de crear una agenda escolar con una estética 
-            de mejor calidad que las que usualmente se encuentran en la Google Play Store, 
-            pero al mismo tiempo integrando funciones que sean realmente útiles para los usuarios.
+            Kitab es una agenda escolar en desarrollo cuyo objetivo es combinar diseño, 
+            rendimiento y funcionalidades útiles para los estudiantes. El proyecto surge 
+            de la idea de ofrecer una experiencia más moderna y cuidada, sin perder de 
+            vista la simplicidad y la facilidad de uso.
           </p>
 
           <p className="text-slate-300 leading-relaxed">
-            Cada función es probada para que se ejecute de la manera correcta, 
-            y al mismo tiempo, toda la experiencia sea intuitiva sin sacrificar 
-            los tiempos de carga.
+            Actualmente, Kitab se encuentra en desarrollo activo. Cada nueva función es 
+            diseñada, implementada y probada antes de formar parte de la aplicación, con 
+            especial atención a la confiabilidad, la experiencia de usuario y el rendimiento.
           </p>
 
           {/* Cards Div */}
@@ -40,7 +47,7 @@ export default function About() {
               <div className="p-4 rounded-xl shadow-sm border border-slate-900 bg-slate-800">
                 <div className="text-2xl text-[#ffb7a7] mb-2"><Palette size={24} /></div>
                 <h4 className="font-semibold text-white text-sm">Diseño adaptable</h4>
-                <p className="text-slate-400 text-xs">Se ve bien en cualquier pantalla.</p>
+                <p className="text-slate-400 text-xs">Se verá bien en cualquier pantalla.</p>
               </div>
               <div className="p-4 rounded-xl shadow-sm border border-slate-900 bg-slate-800">
                 <div className="text-2xl text-[#fdb44e] mb-2"><Lock size={24} /></div>
@@ -75,12 +82,14 @@ export default function About() {
               <p className="text-slate-200 text-left mb-4">Desarrollador Full-Stack con enfoque en UX</p>
 
               <p className="text-slate-300 leading-relaxed mb-4">
-                Me gusta crear experiencias de usuario intuitivas, construir sistemas backend 
-                escalables y transformar ideas en productos completos. Este proyecto me ayuda 
-                a poner a prueba mis habilidades como programador y a explorar nuevas herramientas.
+                Disfruto diseñar interfaces claras, desarrollar backend escalables y convertir ideas 
+                en aplicaciones funcionales. A través de Kitab pongo en práctica conceptos de 
+                arquitectura, experiencia de usuario, autenticación, bases de datos y desarrollo de 
+                software en un entorno similar al de un producto real.
               </p>
               <p className="text-slate-300 leading-relaxed">
-                Fuera del teclado, soy un eterno aprendiz que disfruta explorar nuevas tecnologías, perderme en libros de fantasía y jugar videojuegos.
+                Fuera del desarrollo, me gusta explorar nuevas tecnologías, leer novelas de 
+                fantasía y disfrutar de los videojuegos.
               </p>
 
               {/* Social media */}

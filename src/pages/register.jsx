@@ -2,7 +2,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import React, { useState, useEffect } from 'react';
 import { useAuth } from "../customHooks/useAuth";
-import logo from '../assets/logo-azul.png'
 import './../App.css';
 
 export default function RegisterForm() {
@@ -184,7 +183,7 @@ export default function RegisterForm() {
 
         <div className='w-full flex justify-center items-center'>
           <Link to="/">
-            <img className='w-16 h-auto' src={logo} alt="site logo" />
+            <img className='w-16 h-auto' src="/logo-azul.png" alt="site logo" />
           </Link>
         </div>
 

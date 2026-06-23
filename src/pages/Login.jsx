@@ -1,7 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import {useAuth} from  '../customHooks/useAuth' 
-import logo from '../assets/logo-azul.png'
 
 
 export default function LoginForm() {
@@ -145,7 +144,7 @@ export default function LoginForm() {
 
         <div className='w-full flex justify-center items-center'>
           <Link to="/">
-            <img className='w-16 h-auto' src={logo} alt="site logo" />
+            <img className='w-16 h-auto' src="/logo-azul.png" alt="site logo" />
           </Link>
         </div>
         

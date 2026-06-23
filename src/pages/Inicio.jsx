@@ -20,7 +20,7 @@ export default function Inicio() {
   const faqs = [
     {
       question: "¿Kitab es realmente gratuito?",
-      answer: "Sí. Kitab sigue una filosofía de código abierto (Open Source). Está siendo desarrollado activamente como parte de mi portafolio profesional y puedes utilizarlo sin costo."
+      answer: "Sí. Kitab sigue una filosofía de código abierto (Open Source). Está siendo desarrollado activamente como parte de mi portafolio profesional y puedes probarlo sin costo."
     },
     {
       question: "¿Cómo se guardan mis datos?",

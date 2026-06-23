@@ -17,7 +17,9 @@ export default function Features() {
           <div>
             <h2 className="text-3xl font-bold tracking-tight text-white">Sigue la evolución de Kitab</h2>
             <p className="pt-3 text-slate-300">
-              Esta hoja de ruta te muestra el camino recorrido y lo que estoy construyendo para ti. Explora las funciones ya disponibles, las que estoy desarrollando y las que pronto formarán parte de la experiencia.
+              Esta hoja de ruta documenta el crecimiento de Kitab. Cada etapa representa nuevas 
+              funcionalidades, mejoras y decisiones de diseño que acercan el proyecto a su visión 
+              final.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

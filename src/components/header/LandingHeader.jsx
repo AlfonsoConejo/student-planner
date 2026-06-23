@@ -1,7 +1,6 @@
 import { Link, NavLink } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { useState, useRef } from 'react';
-import logo from '../../assets/logo-azul.png'
 import { useClickOutside } from '@/customHooks/useClickOutside';
 
 export default function LandingHeader() {
@@ -30,7 +29,7 @@ export default function LandingHeader() {
 
             {/* Logo */}
             <Link to="/" className="flex items-center">
-              <img src={logo} className="mr-3 h-7 sm:h-8" alt="Kitab logo" />
+              <img src="/logo-azul.png" className="mr-3 h-7 sm:h-8" alt="Kitab logo" />
               <span className="self-center text-xl font-semibold whitespace-nowrap text-white logo translate-y-0.5">Kitab</span>
             </Link>
           </div>
