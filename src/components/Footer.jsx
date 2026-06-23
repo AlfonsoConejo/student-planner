@@ -14,7 +14,7 @@ export default function Footer(){
         <div className="flex gap-6 text-xs">
           <Link to="features" className="hover:text-white transition">Funciones</Link>
           <Link to="about" className="hover:text-white transition">Acerca de</Link>
-          <a href="https://github.com/AlfonsoConejo/student-planner" target="_blank" rel="noreferrer" className="hover:text-white transition font-medium text-blue-400">
+          <a href="https://github.com/AlfonsoConejo/kitab" target="_blank" rel="noreferrer" className="hover:text-white transition font-medium text-blue-400">
             Ver código en GitHub
           </a>
         </div>

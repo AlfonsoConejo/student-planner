@@ -30,8 +30,8 @@ export default function LandingHeader() {
 
             {/* Logo */}
             <Link to="/" className="flex items-center">
-              <img src={logo} className="mr-3 h-7 sm:h-8" alt="Site logo" />
-              <span className="self-center text-xl font-semibold whitespace-nowrap text-white logo translate-y-[2px]">Kitab</span>
+              <img src={logo} className="mr-3 h-7 sm:h-8" alt="Kitab logo" />
+              <span className="self-center text-xl font-semibold whitespace-nowrap text-white logo translate-y-0.5">Kitab</span>
             </Link>
           </div>
 

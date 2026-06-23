@@ -1,4 +1,4 @@
-import Logo from '../../assets/logo-azul.png'
+import logo from '../../assets/logo-azul.png'
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { notify } from '@/utils';
@@ -80,8 +80,8 @@ export default function AppHeader({user, setUser}) {
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-7x1">
           {/* Logo */}
           <Link to="/app/dashboard" className="flex items-center">
-            <img src={Logo} className="mr-3 h-6 sm:h-9" alt="Site logo" />
-            <span className="self-center text-xl font-semibold whitespace-nowrap text-white">Organizador</span>
+            <img src={logo} className="mr-3 h-7 sm:h-8" alt="Kitab logo" />
+            <span className="self-center text-xl font-semibold whitespace-nowrap text-white logo translate-y-0.5">Kitab</span>
           </Link>
           
           <div className='relative text-white' ref={avatarRef}>

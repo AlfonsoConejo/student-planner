@@ -46,8 +46,7 @@ const MateriasApp = () => {
           {/* HEADER */}
           <header className="flex justify-between items-center">
             <div>
-              <h1 className="text-3xl font-bold">Hola, Alfonso 👋</h1>
-              <p className="text-gray-400 text-sm">Miércoles, 15 de abril</p>
+              <h1 className="text-3xl font-bold">Tablero</h1>
             </div>
 
             <button className="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-lg text-sm font-semibold">

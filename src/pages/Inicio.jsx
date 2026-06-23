@@ -229,7 +229,7 @@ export default function Inicio() {
                   </Link>
 
                   <a
-                    href="https://github.com/AlfonsoConejo/student-planner"
+                    href="https://github.com/AlfonsoConejo/kitab"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center text-sm text-white transition-colors border border-slate-700 bg-slate-800 hover:bg-slate-700 hover:border-slate-700/50 px-4 py-2 rounded-xl"

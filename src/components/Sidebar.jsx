@@ -45,6 +45,7 @@ export default function Sidebar() {
               <span className="ml-3 text-sm">Tablero</span>
             </NavLink>
           </li>
+          
           <li>
             <NavLink to="/app/calendar" className={({ isActive }) =>
               `
@@ -74,6 +75,7 @@ export default function Sidebar() {
               <span className="ml-3 text-sm">Tareas</span>
             </NavLink>
           </li>
+
           <li>
             <NavLink to="/app/tests" className={({ isActive }) =>
               `
@@ -86,6 +88,7 @@ export default function Sidebar() {
               <span className="ml-3 text-sm">Exámenes</span>
             </NavLink>
           </li>
+
           <li>
             <NavLink to="/app/subjects" className={({ isActive }) =>
               `
@@ -98,18 +101,7 @@ export default function Sidebar() {
               <span className="ml-3 text-sm">Materias</span>
             </NavLink>
           </li>
-          <li>
-            <NavLink to="/app/teachers" className={({ isActive }) =>
-              `
-              flex items-center p-2 text-base font-normal text-white rounded-lg hover:bg-gray-700 group
-              ${isActive ? "bg-gray-700" : ""}
-              `
-              }
-            >
-              <Users size={19}/>
-              <span className="ml-3 text-sm">Profesores</span>
-            </NavLink>
-          </li>
+
           <li>
             <NavLink to="/app/breaks" className={({ isActive }) =>
               `

@@ -15,7 +15,6 @@ import Calendar from './pages/Calendar';
 import Tasks from './pages/Tasks';
 import Tests from './pages/Tests';
 import Subjects from './pages/Subjects';
-import Teachers from './pages/Teachers';
 import Breaks from './pages/Breaks';
 import PeriodForm from './pages/PeriodForm';
 import Sprints from './pages/Sprints';
@@ -60,7 +59,6 @@ export default function App() {
           <Route path="tasks" element={<Tasks />} />
           <Route path="tests" element={<Tests />} />
           <Route path="subjects" element={<Subjects />} />
-          <Route path="teachers" element={<Teachers />} />
           <Route path="breaks" element={<Breaks />} />
         </Route>
 
