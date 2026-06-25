@@ -22,7 +22,7 @@ export default function AppLayout() {
       <div className="flex flex-1 min-h-0">
         <Sidebar />
 
-        <main className="flex flex-col flex-1 overflow-y-auto text-white bg-gray-900 px-6 py-6">
+        <main className="flex flex-col flex-1 overflow-y-auto text-white bg-gray-900 p-6">
           <Outlet />
         </main>
       </div>

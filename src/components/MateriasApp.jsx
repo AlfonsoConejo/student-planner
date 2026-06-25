@@ -41,10 +41,10 @@ const MateriasApp = () => {
 
       {/* MAIN */}
       <main className="flex-1 overflow-y-auto bg-gray-900">
-        <div className="max-w-6xl mx-auto p-10 space-y-10">
+        <div className="max-w-6xl mx-auto">
 
           {/* HEADER */}
-          <header className="flex justify-between items-center">
+          <header className="flex justify-between items-center mb-6">
             <div>
               <h1 className="text-3xl font-bold">Tablero</h1>
             </div>
@@ -55,7 +55,7 @@ const MateriasApp = () => {
           </header>
 
           {/* STATS */}
-          <section className="grid sm:grid-cols-3 gap-6">
+          <section className="grid sm:grid-cols-3 gap-6 mb-6">
             {[
               { label: "Clases hoy", value: 3 },
               { label: "Tareas pendientes", value: 5 },

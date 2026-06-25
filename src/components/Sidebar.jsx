@@ -13,13 +13,15 @@ export default function Sidebar() {
         <ul className=" space-y-2 ">
           <h3 className="text-xs text-white">PERIODO</h3>
           <li>
+            {/* Antiguo color de fondo: #2272F5 */}
             <NavLink
               to="/app/periods"
               className="flex items-center p-2 text-base font-normal text-white rounded-lg bg-gray-700 group"
               style={{
                 borderWidth: "1px",
-                borderStyle: selectedPeriod?.id ? "none" : "dashed",
-                backgroundColor: selectedPeriod?.id ? "#2272F5" : "",
+                borderStyle: selectedPeriod?.id ? "solid" : "dashed",
+                borderColor: selectedPeriod?.id ? selectedPeriod.color : "",
+                backgroundColor: selectedPeriod?.id ? selectedPeriod.color : "",
               }}
             >
               <span className="ml-1 text-xs truncate">

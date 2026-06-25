@@ -186,10 +186,10 @@ export default function Inicio() {
                 </div>
               </div>
 
-              {/* Columna derecha - Tabla de versiones anteriores */}
+              {/* Sprints table*/}
               <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6">
                 <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                  Anteriores
+                  <span>Actualizaciones recientes</span>
                 </h3>
 
                 <div className="space-y-4">

@@ -35,14 +35,12 @@ export default function Period() {
     today.setHours(0, 0, 0, 0);
 
     return periods.filter((period) => {
-      // 2. Hacemos lo mismo con las fechas del periodo para comparar solo días enteros
       const start = new Date(period.start_date);
       start.setHours(0, 0, 0, 0);
 
       const end = new Date(period.end_date);
       end.setHours(0, 0, 0, 0);
 
-      // Ahora la comparación es 100% segura por días
       return start <= today && end >= today;
     });
   }, [periods]);
@@ -83,7 +81,7 @@ export default function Period() {
           notify("error", "Error de conexión.");
         }
       } finally {
-        setIsLoading(false); // 2. Apagamos la carga siempre (éxito o error)
+        setIsLoading(false);
       }
     }
     fetchPeriods();
@@ -256,10 +254,18 @@ function PeriodCard({
         {/* Header */}
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h3 className="text-lg font-bold text-white">
-              {period.name}
-            </h3>
-
+            <div className="flex items-center gap-2">
+              <h3 className="text-lg font-bold text-white -translate-y-0.5">
+                {period.name}
+              </h3>
+              <div
+                className="h-5 w-5 rounded-sm bg-gray-400"
+                style={{
+                  backgroundColor: period?.color || undefined,
+                }}
+              ></div>
+            </div>
+            
             <p className="text-sm text-gray-400 mt-1">
               {formatDate(period.start_date)}
               {" → "}

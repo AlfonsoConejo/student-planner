@@ -152,9 +152,7 @@ export default function PeriodForm() {
       ? `/api/periods/${id}`
       : "/api/periods";
 
-    const method = isEditMode
-      ? "PUT"
-      : "POST";
+    const method = isEditMode ? "PUT" : "POST";
 
     try {
       const res = await apiFetch(endpoint, {
@@ -177,14 +175,8 @@ export default function PeriodForm() {
         return;
       }
 
-      if (Number(selectedPeriod?.id) === Number(id)) {
-        setSelectedPeriod({
-          ...selectedPeriod,
-          name: formData.name.trim(),
-          start_date: formData.startDate,
-          end_date: formData.endDate,
-          color: formData.color,
-        });
+      if (isEditMode && Number(selectedPeriod?.id) === Number(id)) {
+        setSelectedPeriod(data.period);
       }
 
       navigate('/app/periods');

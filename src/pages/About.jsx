@@ -62,14 +62,9 @@ export default function About() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Photo column */}
             <div className="flex justify-center order-2 lg:order-1">
-              <div className="relative">
+              <div className="">
                 <div className="w-48 h-48 md:w-56 md:h-56 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center shadow-xl">
-                  {/*<span className="text-6xl text-white">👨‍💻</span>*/}
                   <img src={personal_photo} alt="Alfonso Conejo" className="w-full h-full rounded-full object-cover" />
-                </div>
-                {/* Detalle decorativo */}
-                <div className="absolute -bottom-2 -right-2 bg-indigo-100 rounded-full p-2">
-                  <span className="text-xl">🐉</span>
                 </div>
               </div>
             </div>
@@ -86,10 +81,6 @@ export default function About() {
                 en aplicaciones funcionales. A través de Kitab pongo en práctica conceptos de 
                 arquitectura, experiencia de usuario, autenticación, bases de datos y desarrollo de 
                 software en un entorno similar al de un producto real.
-              </p>
-              <p className="text-slate-300 leading-relaxed">
-                Fuera del desarrollo, me gusta explorar nuevas tecnologías, leer novelas de 
-                fantasía y disfrutar de los videojuegos.
               </p>
 
               {/* Social media */}
