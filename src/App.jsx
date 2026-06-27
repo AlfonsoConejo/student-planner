@@ -19,6 +19,7 @@ import Breaks from './pages/Breaks';
 import PeriodForm from './pages/PeriodForm';
 import Sprints from './pages/Sprints';
 import ScrollToTop from './components/ScrollToTop';
+import SubjectsForm from './pages/SubjectsForm';
 
 export default function App() {
   return (
@@ -53,17 +54,24 @@ export default function App() {
             <Route path="dashboard" element={<Dashboard />} />
             <Route index element={<Navigate to="dashboard" />} />
 
+            
+            {/* Periods */}
             <Route path="periods" element={<Period />} />
             <Route path="periods/new" element={<PeriodForm />} />
             <Route path="periods/:id/edit" element={<PeriodForm />} />
 
+            {/* Subjects */}
+            <Route path="subjects" element={<Subjects />} />
+            <Route path="subjects/new" element={<SubjectsForm />} />
+            <Route path="subjects/:id/edit" element={<SubjectsForm />} />
+
             <Route path="calendar" element={<Calendar />} />
             <Route path="tasks" element={<Tasks />} />
             <Route path="tests" element={<Tests />} />
-            <Route path="subjects" element={<Subjects />} />
             <Route path="breaks" element={<Breaks />} />
-          </Route>
 
+          </Route>
+|
         </Route>
       </Routes>
     </>

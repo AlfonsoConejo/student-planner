@@ -253,17 +253,16 @@ function PeriodCard({
       <div className="p-5">
         {/* Header */}
         <div className="flex items-start justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-lg font-bold text-white -translate-y-0.5">
+          <div className="flex-1 min-w-0">
+            <div className="grid grid-cols-[1fr_auto] items-center gap-2 min-w-0">
+              <h3 className="truncate text-lg font-bold text-white -translate-y-0.5">
                 {period.name}
               </h3>
+
               <div
-                className="h-5 w-5 rounded-sm bg-gray-400"
-                style={{
-                  backgroundColor: period?.color || undefined,
-                }}
-              ></div>
+                className="h-5 w-5 rounded-sm"
+                style={{ backgroundColor: period.color }}
+              />
             </div>
             
             <p className="text-sm text-gray-400 mt-1">
@@ -313,7 +312,7 @@ function PeriodCard({
 
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex gap-2 shrink-0">
             <button
               onClick={() => onEdit?.(period)}
               className="

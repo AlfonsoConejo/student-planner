@@ -63,7 +63,7 @@ export default function About() {
             {/* Photo column */}
             <div className="flex justify-center order-2 lg:order-1">
               <div className="">
-                <div className="w-48 h-48 md:w-56 md:h-56 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center shadow-xl">
+                <div className="w-48 h-48 md:w-56 md:h-56 rounded-full bg-gray-600 flex items-center justify-center shadow-xl">
                   <img src={personal_photo} alt="Alfonso Conejo" className="w-full h-full rounded-full object-cover" />
                 </div>
               </div>

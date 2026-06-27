@@ -19,7 +19,6 @@ export default function PeriodForm() {
   //Detect if it is a Creation Form or an Edition Form
   const { id } = useParams();
   const isEditMode = Boolean(id);
-  console.log("Modo edición: " + isEditMode);
 
   const [isLoadingPeriod, setIsLoadingPeriod] = useState(isEditMode);
 

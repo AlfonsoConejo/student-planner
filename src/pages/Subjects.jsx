@@ -2,6 +2,7 @@ import NoActivePeriodMessage from "@/components/NoActivePeriodMessage";
 import EmptySubjectsMessage from "@/components/EmptySubjectsMessage";
 import { apiFetch } from "@/services/apiFetch";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { notify } from "@/utils";
 import { usePeriod } from "@/context/PeriodContext";
 
@@ -59,9 +60,9 @@ export default function Subjects() {
         </h1>
         {
           selectedPeriod && 
-          <button className="bg-sky-600 hover:bg-sky-500 px-4 py-2 rounded-lg text-sm font-semibold cursor-pointer transition-colors">
+          <Link to="/app/subjects/new" className="bg-sky-600 hover:bg-sky-500 px-4 py-2 rounded-lg text-sm font-semibold cursor-pointer transition-colors">
             Agregar materia
-          </button>
+          </Link>
         } 
       </div>
 
