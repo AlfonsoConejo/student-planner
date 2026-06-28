@@ -161,20 +161,19 @@ export default function Inicio() {
           </p>
           
           <div>
-            
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">  
               {/* Last sprint column*/}
               <div className="rounded-xl overflow-hidden shadow-lg border border-white/10 bg-black/20">
                 <div className="aspect-video w-full bg-black/50 flex items-center justify-center">
                   {/* Reemplaza este iframe con tu video de YouTube */}
-                  <iframe
+                  <iframe 
                     className="w-full h-full"
                     src={latestSprint.videoUrl}
                     title="Demo Kitab"
-                    allowFullScreen
-                  />
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin" 
+                    allowfullscreen></iframe>
                 </div>
                 <div className="p-4 bg-white/5">
                   <p className="text-sm text-gray-400">
