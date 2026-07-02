@@ -5,6 +5,7 @@ import { apiFetch } from "../services/apiFetch.js";
 import { useParams } from "react-router-dom";
 import { notify } from "@/utils.jsx";
 import { usePeriod } from "@/context/PeriodContext.jsx";
+import ColorPicker from "@/components/ColorPicker.jsx";
 import colors from "@/data/colors.js";
 
 export default function PeriodForm() {
@@ -289,41 +290,11 @@ export default function PeriodForm() {
             </div>
           </div>
           
-          <div className="w-full flex flex-col gap-2">
-            <label className="text-sm font-medium text-gray-300" >
-              Color
-            </label>
-            <div
-              className="
-                grid grid-flow-col
-                grid-rows-3 justify-between
-                gap-y-6 w-full
-              "
-            >
-
-              {colors.map((color) => (
-                <button
-                  onClick={() => handleColorChange(color)}
-                  key={color}
-                  type="button"
-                  className={`
-                    h-11
-                    w-11
-                    rounded-lg
-                    transition-transform
-                    cursor-pointer
-
-                    ${
-                      formData.color === color
-                        ? 'ring-2 ring-white'
-                        : 'border-2 border-gray-700'
-                    }
-                  `}
-                  style={{ backgroundColor: color }}
-                />
-              ))}
-            </div>
-          </div>
+          <ColorPicker
+            colors={colors}
+            value={formData.color}
+            onChange={handleColorChange}
+          />
 
           {/* Recommendations */}
           <div className="rounded-lg border border-gray-800 bg-gray-900/50 p-4">

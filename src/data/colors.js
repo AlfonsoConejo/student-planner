@@ -15,21 +15,6 @@ const colors = [
     "#A855F7", // Purple
     "#D946EF", // Fuchsia
     "#EC4899", // Pink
-
-    "#DC2626",
-    "#EA580C",
-    "#CA8A04",
-    "#65A30D",
-    "#16A34A",
-    "#059669",
-    "#0F766E",
-    "#0891B2",
-    "#2563EB",
-    "#4338CA",
-    "#7C3AED",
-    "#9333EA",
-    "#C026D3",
-    "#DB2777",
   ];
 
 export default colors;
